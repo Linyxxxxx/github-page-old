@@ -1,0 +1,256 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>wizard:游戏设计课cocos学习记录 | 二零拾肆</title><meta name="keywords" content="游戏"><meta name="author" content="Linyx"><meta name="copyright" content="Linyx"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="👇 Gitee最近暂停服务 没法进入 项目预览： 电脑端 | 手机端 👆 电脑端不定期更新吧，手机端看心情更新。反正也没啥东西hhhh，就是自己瞎玩。 这篇post的评论区就不关闭咯，大家可以一起讨论讨论cocos，想交流实验作业的一些问题也可以喔~   Week 1 普普通通地安装了cocos，毕竟之前玩过一会unity，混一混就过去了。  Week 2 做的是登录UI，都是些基础控件的使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="wizard:游戏设计课cocos学习记录">
+<meta property="og:url" content="https://linyxxxxx.github.io/2021/04/17/cocos-wizard/index.html">
+<meta property="og:site_name" content="二零拾肆">
+<meta property="og:description" content="👇 Gitee最近暂停服务 没法进入 项目预览： 电脑端 | 手机端 👆 电脑端不定期更新吧，手机端看心情更新。反正也没啥东西hhhh，就是自己瞎玩。 这篇post的评论区就不关闭咯，大家可以一起讨论讨论cocos，想交流实验作业的一些问题也可以喔~   Week 1 普普通通地安装了cocos，毕竟之前玩过一会unity，混一混就过去了。  Week 2 做的是登录UI，都是些基础控件的使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.cocos.com/wp-content/themes/cocos/image/product/CocosCreator_bg.png">
+<meta property="article:published_time" content="2021-04-17T03:42:42.000Z">
+<meta property="article:modified_time" content="2021-05-14T08:25:44.236Z">
+<meta property="article:author" content="Linyx">
+<meta property="article:tag" content="游戏">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.cocos.com/wp-content/themes/cocos/image/product/CocosCreator_bg.png"><link rel="shortcut icon" href="/images/icons/favicon-32x32.png"><link rel="canonical" href="https://linyxxxxx.github.io/2021/04/17/cocos-wizard/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Linyx","link":"链接: ","source":"来源: 二零拾肆","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-05-14 16:25:44'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}const fontSizeVal = saveToLocal.get('global-font-size')
+if (fontSizeVal !== undefined) {
+  document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+}})()</script><link rel="stylesheet" href="//at.alicdn.com/t/font_2304165_mthx92dd7j.css"><meta name="generator" content="Hexo 5.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/images/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-flask"></i><span> 实验室</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="https://linyxxxxx.github.io/lab/2048/"><i class="fa-fw fas fa-gamepad"></i><span> 2048Game</span></a></li><li><a class="site-page" href="/2021/04/17/cocos-wizard/"><i class="fa-fw fas fa-gamepad"></i><span> WIZARD</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 我-</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/me/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></li><li><a class="site-page" href="/opinion"><i class="fa-fw fas fa-signature"></i><span> 随想</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://www.cocos.com/wp-content/themes/cocos/image/product/CocosCreator_bg.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">二零拾肆</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-flask"></i><span> 实验室</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="https://linyxxxxx.github.io/lab/2048/"><i class="fa-fw fas fa-gamepad"></i><span> 2048Game</span></a></li><li><a class="site-page" href="/2021/04/17/cocos-wizard/"><i class="fa-fw fas fa-gamepad"></i><span> WIZARD</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 我-</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/me/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></li><li><a class="site-page" href="/opinion"><i class="fa-fw fas fa-signature"></i><span> 随想</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">wizard:游戏设计课cocos学习记录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-17T03:42:42.000Z" title="发表于 2021-04-17 11:42:42">2021-04-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-05-14T08:25:44.236Z" title="更新于 2021-05-14 16:25:44">2021-05-14</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">944</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div class="note danger flat"><p>👇</p>
+<p><strong>Gitee最近暂停服务 没法进入</strong></p>
+<p><strong>项目预览：</strong> <a target="_blank" rel="noopener" href="https://linyxxxxx.gitee.io/lab/wizard-desktop/">电脑端</a> | <a target="_blank" rel="noopener" href="https://linyxxxxx.gitee.io/lab/wizard-mobile/">手机端</a></p>
+<p>👆</p>
+<p>电脑端不定期更新吧，手机端看心情更新。反正也没啥东西hhhh，就是自己瞎玩。</p>
+<p>这篇post的评论区就不关闭咯，大家可以一起讨论讨论cocos，想交流实验作业的一些问题也可以喔~</p>
+</div>
+<hr>
+<div class="note success flat"><p><strong>Week 1</strong></p>
+<p>普普通通地安装了cocos，毕竟之前玩过一会unity，混一混就过去了。</p>
+</div>
+<div class="note success flat"><p><strong>Week 2</strong></p>
+<p>做的是登录UI，都是些基础控件的使用，没啥难度，又混过去了。</p>
+</div>
+<div class="note success flat"><p><strong>Week 3</strong></p>
+<p>手写重力掉落和背景滚动，老师没给代码结果一堆人写不出来，还好之前玩过js，cocos用的是ts，又是混一混就过去了。只是想知道为什么重力要手写，cocos应该有刚体吧……</p>
+</div>
+<div class="note success flat"><p><strong>Week 4</strong></p>
+<p>学习了触摸及鼠标点击事件，老师给的代码又一次出错了，花了三个小时才找到问题之所在。也因此加深了对 <code>getLocation()</code> 和  <code>getUILocation()</code> 的理解……</p>
+</div>
+<div class="note success flat"><p><strong>Week 5</strong></p>
+<p>完成了玩家动画，并且手写了个状态机。原来状态机是这样的，长见识了……感觉cocos的动画编辑器还是挺好用的，除了交互不太友好以外都挺ok，比某些功能好多了。</p>
+</div>
+<div class="note success flat"><p><strong>Week 6</strong></p>
+<p>预制体和缓动函数。缓动函数确实是cocos里为数不多的较出众的功能，写起来还挺优雅的，不过据说旧版本的action更加优雅，不知道为什么现在改了……本来想着这周作业混一混就过去了，结果老师突然说不能用他给的素材，要自己找素材。还好之前收藏了个 <a target="_blank" rel="noopener" href="http://itch.io">itch.io</a> ，花了好大劲才把素材全换了，累死了累死了累死了！！！</p>
+</div>
+<div class="note success flat"><p><strong>Week 7</strong></p>
+<p>哇终于开始做碰撞和触发了，本来以为做起来会挺顺的，但是不知道为什么cocos的 <code>PhysicsSystem2D.instance.debugDrawFlags</code> 死活没法显示，明明老师的示例代码也是这样写的，唉到现在都还没解决，而且这种东西出了bug完全没有debug的头绪。正好这周比较闲，一口气把得分的碰撞也做了，顺便跟着老师的范例完善了一些细节，然后构建导出了web程序。</p>
+<p>昨晚突然灵机一动，想把web程序部署到GitHub Page上，结果失败了，无论如何都没法正常运行，可能又会是一个大坑，够我想好久了……今天早上突然灵机一动，创建了个Gitee Page，然后上传部署之，结果竟然成功了……果然还是要国产的才彳亍吗，算了就这样吧，暂时先用着，Gitee也挺好的……</p>
+<p><strong>2021.4.23</strong></p>
+<p>上述问题已经解决，原来是新版本的cocos没有默认开启debug功能，需要添加一个脚本手动开启……太无语了。</p>
+</div>
+<div class="note success flat"><p><strong>Week 8</strong></p>
+<p>完善了一些UI自适应，并且用 <code>sys.localStorage</code> 实现了游戏数据的本地存储，长知识了，第一次知道这个东西，上这么久游戏实验课第一次感觉学到了新知识。这周作业很轻松，甚至下课前半个小时就提交了。</p>
+</div>
+<div class="note success flat"><p><strong>Week 9</strong></p>
+<p>完成了难度选择的部分，很简单，划一划就过去了，一节课就做完并提交了。</p>
+</div>
+<div class="note success flat"><p><strong>Week 10</strong></p>
+<p>加了音乐音效和粒子效果，粒子效果之前倒是没做过，做起来有点楞，但是音频部分还挺容易的，不知道有没有人能听出来背景音乐是什么嘿嘿。</p>
+</div>
+<div class="note success flat"><p><strong>Week 11</strong></p>
+<p>跟着老师的任务要求搞了点网络通信的内容，有点不知道在做什么。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Linyx</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://linyxxxxx.github.io/2021/04/17/cocos-wizard/">https://linyxxxxx.github.io/2021/04/17/cocos-wizard/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://linyxxxxx.github.io" target="_blank">二零拾肆</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B8%B8%E6%88%8F/">游戏</a></div><div class="post_share"><div class="social-share" data-image="https://www.cocos.com/wp-content/themes/cocos/image/product/CocosCreator_bg.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/05/09/cg-note-01/"><img class="prev-cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">图形学学习笔记#1:变换</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/04/CG-1/"><img class="next-cover" src="https://i.loli.net/2021/04/04/ctrlBhgF2uq7Xda.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">使用OpenGL读取ply文件并构建模型</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/01/29/borderlands3/" title="无主之地3:一场荒谬而又爽快的狩猎"><img class="cover" src="https://i.loli.net/2021/01/29/5NlF3PT2d8kZoCY.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-29</div><div class="title">无主之地3:一场荒谬而又爽快的狩猎</div></div></a></div><div><a href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验"><img class="cover" src="https://s2.loli.net/2022/02/10/jNZFLl8TygBi1rR.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-10</div><div class="title">双人成行:老套的剧情,全新的体验</div></div></a></div><div><a href="/2019/12/13/linyx-game-awards/" title="LGA:此生最佳游戏评选"><img class="cover" src="https://i.loli.net/2020/12/31/fq97o1pgd4mOtzk.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-12-13</div><div class="title">LGA:此生最佳游戏评选</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Linyx</div><div class="author-info__description">哀吾生之须臾</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Linyxxxxx/"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Linyxxxxx/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://weibo.com/5239240464/" target="_blank" title="Weibo"><i class="fab fa-weibo"></i></a><a class="social-icon" href="https://www.zhihu.com/people/lin-30-65/" target="_blank" title="Zhihu"><i class="iconfont icon-29"></i></a><a class="social-icon" href="https://steamcommunity.com/profiles/76561198147249500/" target="_blank" title="Steam"><i class="fab fa-steam"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">Linyx.tk上不去了,大概是用來托管的Vercel挂了,先將就一下來這裏玩玩吧:https://linyxxxxx-github-io.vercel.app/。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验"><img src="https://s2.loli.net/2022/02/10/jNZFLl8TygBi1rR.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="双人成行:老套的剧情,全新的体验"/></a><div class="content"><a class="title" href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验">双人成行:老套的剧情,全新的体验</a><time datetime="2022-02-10T02:34:05.000Z" title="发表于 2022-02-10 10:34:05">2022-02-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/20/my-2021/" title="二零贰壹"><img src="https://i.loli.net/2021/02/11/ncoG4Sj93xXJkP6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二零贰壹"/></a><div class="content"><a class="title" href="/2021/12/20/my-2021/" title="二零贰壹">二零贰壹</a><time datetime="2021-12-20T12:33:31.000Z" title="发表于 2021-12-20 20:33:31">2021-12-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置"><img src="https://i.loli.net/2020/12/31/fq97o1pgd4mOtzk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Eclipse-Java-SceneBuilder开发环境配置"/></a><div class="content"><a class="title" href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置">Eclipse-Java-SceneBuilder开发环境配置</a><time datetime="2021-12-04T11:25:23.000Z" title="发表于 2021-12-04 19:25:23">2021-12-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性"><img src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#5：数据库完整性"/></a><div class="content"><a class="title" href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性">数据库笔记#5：数据库完整性</a><time datetime="2021-11-20T07:02:03.000Z" title="发表于 2021-11-20 15:02:03">2021-11-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性"><img src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#4：数据库安全性"/></a><div class="content"><a class="title" href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性">数据库笔记#4：数据库安全性</a><time datetime="2021-11-18T01:25:28.000Z" title="发表于 2021-11-18 09:25:28">2021-11-18</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://www.cocos.com/wp-content/themes/cocos/image/product/CocosCreator_bg.png)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Linyx</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'gDX8T2SqKmS0aYnxymQFgDG4-MdYXbMMI',
+      appKey: 'xFlsnc4CqFoa2lrbkDMg2i1W',
+      placeholder: '想说啥就说吧，有人在听呢。',
+      avatar: 'wavatar',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script id="canvas_nest" defer="defer" color="255,182,185" opacity="0.6" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div></body></html>

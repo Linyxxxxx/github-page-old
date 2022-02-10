@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>XML学习笔记#1:XML语法 | 二零拾肆</title><meta name="keywords" content="编程,计算机"><meta name="author" content="Linyx"><meta name="copyright" content="Linyx"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="XML是一种用于标记电子文件使其具有结构性的标记语言。这是一篇XML的笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XML学习笔记#1:XML语法">
+<meta property="og:url" content="https://linyxxxxx.github.io/2020/11/22/xml-note-1/index.html">
+<meta property="og:site_name" content="二零拾肆">
+<meta property="og:description" content="XML是一种用于标记电子文件使其具有结构性的标记语言。这是一篇XML的笔记。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/01/01/1fdgqnuGUseARti.png">
+<meta property="article:published_time" content="2020-11-22T02:40:26.000Z">
+<meta property="article:modified_time" content="2021-01-01T02:28:36.121Z">
+<meta property="article:author" content="Linyx">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="计算机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/01/1fdgqnuGUseARti.png"><link rel="shortcut icon" href="/images/icons/favicon-32x32.png"><link rel="canonical" href="https://linyxxxxx.github.io/2020/11/22/xml-note-1/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Linyx","link":"链接: ","source":"来源: 二零拾肆","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-01-01 10:28:36'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}const fontSizeVal = saveToLocal.get('global-font-size')
+if (fontSizeVal !== undefined) {
+  document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+}})()</script><link rel="stylesheet" href="//at.alicdn.com/t/font_2304165_mthx92dd7j.css"><meta name="generator" content="Hexo 5.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/images/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-flask"></i><span> 实验室</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="https://linyxxxxx.github.io/lab/2048/"><i class="fa-fw fas fa-gamepad"></i><span> 2048Game</span></a></li><li><a class="site-page" href="/2021/04/17/cocos-wizard/"><i class="fa-fw fas fa-gamepad"></i><span> WIZARD</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 我-</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/me/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></li><li><a class="site-page" href="/opinion"><i class="fa-fw fas fa-signature"></i><span> 随想</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2021/01/01/1fdgqnuGUseARti.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">二零拾肆</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-flask"></i><span> 实验室</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="https://linyxxxxx.github.io/lab/2048/"><i class="fa-fw fas fa-gamepad"></i><span> 2048Game</span></a></li><li><a class="site-page" href="/2021/04/17/cocos-wizard/"><i class="fa-fw fas fa-gamepad"></i><span> WIZARD</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 我-</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/me/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></li><li><a class="site-page" href="/opinion"><i class="fa-fw fas fa-signature"></i><span> 随想</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">XML学习笔记#1:XML语法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-11-22T02:40:26.000Z" title="发表于 2020-11-22 10:40:26">2020-11-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-01T02:28:36.121Z" title="更新于 2021-01-01 10:28:36">2021-01-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/XML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">XML学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>XML是一种用于标记电子文件使其具有结构性的标记语言。这是一篇XML的笔记。</p>
+<a id="more"></a>
+<h2 id="概述"><a class="markdownIt-Anchor" href="#概述"></a> 概述</h2>
+<p>XML(eXtensible Markup Language)是标记语言中的一种，以一种更中立的方式，让用户自行决定要如何理解、呈现从服务端所提供的信息，而着重表示数据以及数据之间的联系。</p>
+<p>其特点为可扩展性、灵活性、自描述性与简洁性。</p>
+<p>一个完整的XML文档大体分为三个部分：文档数据(XML)、文档结构(DTD/Schema)与文档样式(XSL/CSS)。其结构为树形结构。</p>
+<h2 id="语法"><a class="markdownIt-Anchor" href="#语法"></a> 语法</h2>
+<h3 id="声明"><a class="markdownIt-Anchor" href="#声明"></a> 声明</h3>
+<p>位于XML文档的第一行，结构一般为：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span> </span><br></pre></td></tr></table></figure>
+<p>其基本框架为</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml 版本声明 编码声明 独立声明?&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>版本声明</strong> ：version属性的取值用于描述当前XML的版本编号，通常情况下为1.0，这是为了将来的新版本能够保持向后的兼容性而设计的。这个属性必须存在，且必须作为第一个属性。</li>
+<li><strong>编码声明</strong> ：encoding属性的取值用于指明当前XML文档中所使用的符号的编码方式。我们一般选用UTF-8编码。</li>
+<li><strong>独立声明</strong> ：standalone属性的取值表明当前XML文件是独立使用、还是与其他的标记文件配套使用。如果该属性为yes，表示在解析当前XML文档时，无需其他的外部标记声明文件。</li>
+</ul>
+<div class="note info flat"><p><strong>注意</strong></p>
+<p>encoding的值与XML文档在文件系统中保存时使用的编码方式没有直接的关系</p>
+</div>
+<div class="note info flat"><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">?target-name</span> <span class="attr">data</span>?&gt;</span> </span><br></pre></td></tr></table></figure>
+<p>的语法形式为<strong>处理指令</strong> ，用于XML文档的转换，后续会接触到更多处理指令。</p>
+</div>
+<h3 id="注释"><a class="markdownIt-Anchor" href="#注释"></a> 注释</h3>
+<p>注释的基本框架为：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 注释内容  --&gt;</span></span><br></pre></td></tr></table></figure>
+<div class="note warning flat"><p>由于“- -”为注释中的保留字符，所以在注释内容中<strong>不应该出现双横杠</strong></p>
+</div>
+<div class="note warning flat"><p>注释一般为<strong>独立出现</strong> ，不应出现在其他元素的标记中，同理，注释也不应该嵌套</p>
+</div>
+<h3 id="元素与属性"><a class="markdownIt-Anchor" href="#元素与属性"></a> 元素与属性</h3>
+<h4 id="基本框架"><a class="markdownIt-Anchor" href="#基本框架"></a> 基本框架</h4>
+<p>之所以将其放在一起，是因为它们所起的功能是相似的，其基本框架为：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">元素名</span> 属性名<span class="attr">1</span>=<span class="string">&quot;属性值1&quot;</span> 属性名<span class="attr">2</span>=<span class="string">&quot;属性值2&quot;</span>&gt;</span></span><br><span class="line">    元素内容1</span><br><span class="line">    元素内容2</span><br><span class="line"><span class="tag">&lt;/<span class="name">元素名</span>&gt;</span>                        </span><br></pre></td></tr></table></figure>
+<p>元素与属性可谓XML中的核心，起到了存储数据的功能。其基本框架与HTML类似：元素分为起始标记&lt;元素名&gt;与中止标记&lt;/元素名&gt;，被这两个标记所包含的即为元素的内容，内容中可以嵌套其他元素。而属性被包含在元素的起始标记当中，基本结构为属性名=“属性值”，用来为元素添加属性。</p>
+<p>元素与属性的使用并没有优劣之分，但一般情况下：考虑到文档的可读性，我们会将简单的标量数据设置为属性，其余一律设置为元素。</p>
+<p>由于不同属性之间不允许有重复的属性名，但不同元素可以，所以要是有多个相同内容，就必须使用元素。也正因为此，属性之间是无序的，而元素之间是有序的。例如：若一本书有多个作者，用元素表示会显得更为优雅：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">book</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">author</span>&gt;</span>Lyx<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">author</span>&gt;</span>linyx<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">book</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>而用元素表示，则较为杂乱：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">book</span> <span class="attr">author1</span>=<span class="string">&quot;Lyx&quot;</span> <span class="attr">author2</span>=<span class="string">&quot;linyx&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">book</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>与HTML一样，XML也支持空元素的表示，一般用于只有属性而没有元素内容的元素。如上面这行代码，可以简化成：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">book</span> <span class="attr">author1</span>=<span class="string">&quot;Lyx&quot;</span> <span class="attr">author2</span>=<span class="string">&quot;linyx&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="元素中的文本"><a class="markdownIt-Anchor" href="#元素中的文本"></a> 元素中的文本</h4>
+<p>与HTML相同，在元素的文本中无法清晰地解析一些保留字符，如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;lessthan&gt;1&lt;2&lt;/lessthan&gt; </span><br></pre></td></tr></table></figure>
+<p>中的“&lt;”就难以被XML所解析，无法判断到底是字符还是结束标记。所以需要我们用其他字符来代替这些保留字符。XML1.0规范中定义了五种预定义实体：</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>预定义实体</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&lt;</td>
+<td>&amp;lt;</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>&amp;gt;</td>
+</tr>
+<tr>
+<td>&amp;</td>
+<td>&amp;amp;</td>
+</tr>
+<tr>
+<td>’</td>
+<td>&amp;apos;</td>
+</tr>
+<tr>
+<td>&quot;</td>
+<td>&amp;quot;</td>
+</tr>
+</tbody>
+</table>
+<p>如上述例子将“&lt;”用“&amp;lt;”替代后就能成功被解析：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">lessthan</span>&gt;</span>1<span class="symbol">&amp;lt;</span>2<span class="tag">&lt;/<span class="name">lessthan</span>&gt;</span> </span><br></pre></td></tr></table></figure>
+<p>（这里无法成功被转换成“&lt;”是我博客解析的问题，写入XML是会正常转换的）</p>
+<p>当然，如果觉得这些预定义实体符太难记，也可以用暴力点的方法：CDATA段。可以将整段文本放入CDATA段中：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;![CDATA[文本内容]]&gt;</span><br></pre></td></tr></table></figure>
+<p>这样一来其中的字符就不会被保留字符所影响，可以直接解析。但需要注意的是，其中的文本内容也不能包含“]]&gt;”的字符串，否则也是会解析错误。同理，CDATA段不应嵌套。</p>
+<h3 id="命名空间"><a class="markdownIt-Anchor" href="#命名空间"></a> 命名空间</h3>
+<p>和许多编程语言相同，XML也支持命名空间。其基本声明方式为：<strong>xmlns:空间名=“URL”</strong> ，声明部分应该作为属性存在于某个元素中。这样听起来可能有些抽象，我们来举个例子：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ns:company</span> <span class="attr">xmlns:ns</span>=<span class="string">&quot;http://www.myns.com&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ns:company-info</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ns:name</span>&gt;</span>SoftwareBG<span class="tag">&lt;/<span class="name">ns:name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ns:fdate</span>&gt;</span>2007-03-17<span class="tag">&lt;/<span class="name">ns:fdate</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ns:company-info</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ns:company</span>&gt;</span> </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这里就是从网络上引用了命名空间，并设置其名字为ns，然后应用于该元素极其子元素中。与其他语言一样，命名空间存在其作用域，比如这里的ns就只能在</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ns:company</span> <span class="attr">xmlns:ns</span>=<span class="string">&quot;http://www.myns.com&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">ns:company</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>中被使用，超出了这个作用域就无法使用。</p>
+<p>与其他语言相同，命名空间的名字可以被缺省，简化了命名空间的使用，同时对作用域中的所有元素强制应用：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">company</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.myns.com&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">company-info</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>SoftwareBG<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">fdate</span>&gt;</span>2007-03-17<span class="tag">&lt;/<span class="name">fdate</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">company-info</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">company</span>&gt;</span> </span><br></pre></td></tr></table></figure>
+<h2 id="结"><a class="markdownIt-Anchor" href="#结"></a> 结</h2>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Linyx</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://linyxxxxx.github.io/2020/11/22/xml-note-1/">https://linyxxxxx.github.io/2020/11/22/xml-note-1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://linyxxxxx.github.io" target="_blank">二零拾肆</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/01/01/1fdgqnuGUseARti.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/11/23/xml-note-2/"><img class="prev-cover" src="https://i.loli.net/2021/01/01/1fdgqnuGUseARti.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">XML学习笔记#2:DTD</div></div></a></div><div class="next-post pull-right"><a href="/2020/11/20/csharp-homework-3/"><img class="next-cover" src="https://i.loli.net/2021/01/01/x65fFhZawMdyjLR.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">C#实验笔记#3:反射</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/04/04/CG-1/" title="使用OpenGL读取ply文件并构建模型"><img class="cover" src="https://i.loli.net/2021/04/04/ctrlBhgF2uq7Xda.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-04</div><div class="title">使用OpenGL读取ply文件并构建模型</div></div></a></div><div><a href="/2021/05/09/cg-note-01/" title="图形学学习笔记#1:变换"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-09</div><div class="title">图形学学习笔记#1:变换</div></div></a></div><div><a href="/2021/05/16/cg-note-02/" title="图形学学习笔记#2:明暗着色"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-16</div><div class="title">图形学学习笔记#2:明暗着色</div></div></a></div><div><a href="/2021/05/23/cg-note-03/" title="图形学学习笔记#3:光线追踪"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-23</div><div class="title">图形学学习笔记#3:光线追踪</div></div></a></div><div><a href="/2021/06/18/cg-note-04/" title="图形学学习笔记#4:杂"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-18</div><div class="title">图形学学习笔记#4:杂</div></div></a></div><div><a href="/2021/10/31/computer-networking-note-1/" title="计网笔记#1：概论"><img class="cover" src="https://i.loli.net/2021/10/31/KeLOvCzsu6pRwUn.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-31</div><div class="title">计网笔记#1：概论</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Linyx</div><div class="author-info__description">哀吾生之须臾</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Linyxxxxx/"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Linyxxxxx/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://weibo.com/5239240464/" target="_blank" title="Weibo"><i class="fab fa-weibo"></i></a><a class="social-icon" href="https://www.zhihu.com/people/lin-30-65/" target="_blank" title="Zhihu"><i class="iconfont icon-29"></i></a><a class="social-icon" href="https://steamcommunity.com/profiles/76561198147249500/" target="_blank" title="Steam"><i class="fab fa-steam"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">Linyx.tk上不去了,大概是用來托管的Vercel挂了,先將就一下來這裏玩玩吧:https://linyxxxxx-github-io.vercel.app/。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text"> 概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text"> 语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E"><span class="toc-number">2.1.</span> <span class="toc-text"> 声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A"><span class="toc-number">2.2.</span> <span class="toc-text"> 注释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E7%B4%A0%E4%B8%8E%E5%B1%9E%E6%80%A7"><span class="toc-number">2.3.</span> <span class="toc-text"> 元素与属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6"><span class="toc-number">2.3.1.</span> <span class="toc-text"> 基本框架</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E6%96%87%E6%9C%AC"><span class="toc-number">2.3.2.</span> <span class="toc-text"> 元素中的文本</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-number">2.4.</span> <span class="toc-text"> 命名空间</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text"> 结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验"><img src="https://s2.loli.net/2022/02/10/jNZFLl8TygBi1rR.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="双人成行:老套的剧情,全新的体验"/></a><div class="content"><a class="title" href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验">双人成行:老套的剧情,全新的体验</a><time datetime="2022-02-10T02:34:05.000Z" title="发表于 2022-02-10 10:34:05">2022-02-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/20/my-2021/" title="二零贰壹"><img src="https://i.loli.net/2021/02/11/ncoG4Sj93xXJkP6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二零贰壹"/></a><div class="content"><a class="title" href="/2021/12/20/my-2021/" title="二零贰壹">二零贰壹</a><time datetime="2021-12-20T12:33:31.000Z" title="发表于 2021-12-20 20:33:31">2021-12-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置"><img src="https://i.loli.net/2020/12/31/fq97o1pgd4mOtzk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Eclipse-Java-SceneBuilder开发环境配置"/></a><div class="content"><a class="title" href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置">Eclipse-Java-SceneBuilder开发环境配置</a><time datetime="2021-12-04T11:25:23.000Z" title="发表于 2021-12-04 19:25:23">2021-12-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性"><img src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#5：数据库完整性"/></a><div class="content"><a class="title" href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性">数据库笔记#5：数据库完整性</a><time datetime="2021-11-20T07:02:03.000Z" title="发表于 2021-11-20 15:02:03">2021-11-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性"><img src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#4：数据库安全性"/></a><div class="content"><a class="title" href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性">数据库笔记#4：数据库安全性</a><time datetime="2021-11-18T01:25:28.000Z" title="发表于 2021-11-18 09:25:28">2021-11-18</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://i.loli.net/2021/01/01/1fdgqnuGUseARti.png)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Linyx</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script id="canvas_nest" defer="defer" color="255,182,185" opacity="0.6" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div></body></html>

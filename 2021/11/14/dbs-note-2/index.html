@@ -1,0 +1,278 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>数据库笔记#2：关系数据库 | 二零拾肆</title><meta name="keywords" content="编程,计算机"><meta name="author" content="Linyx"><meta name="copyright" content="Linyx"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="关系数据结构及形式化定义  关系模型 &#x3D; 关系数据结构 + 关系操作集合 + 关系完整性约束 关系的三种类型：基本关系（实际存储数据的逻辑表示）、查询表（查询结果的表）、视图（虚表）   基本关系的六个性质：三列两行一分量  列是同质的 不同的列可以出自同一个域，每一列为一个属性，不同属性给予不同属性名 列的次序可以任意交换 任意两个元组的候选码不能相同 行的次序可以任意交换 分量必须取原子值，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库笔记#2：关系数据库">
+<meta property="og:url" content="https://linyxxxxx.github.io/2021/11/14/dbs-note-2/index.html">
+<meta property="og:site_name" content="二零拾肆">
+<meta property="og:description" content="关系数据结构及形式化定义  关系模型 &#x3D; 关系数据结构 + 关系操作集合 + 关系完整性约束 关系的三种类型：基本关系（实际存储数据的逻辑表示）、查询表（查询结果的表）、视图（虚表）   基本关系的六个性质：三列两行一分量  列是同质的 不同的列可以出自同一个域，每一列为一个属性，不同属性给予不同属性名 列的次序可以任意交换 任意两个元组的候选码不能相同 行的次序可以任意交换 分量必须取原子值，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png">
+<meta property="article:published_time" content="2021-11-14T02:05:56.000Z">
+<meta property="article:modified_time" content="2021-11-14T03:05:57.706Z">
+<meta property="article:author" content="Linyx">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="计算机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png"><link rel="shortcut icon" href="/images/icons/favicon-32x32.png"><link rel="canonical" href="https://linyxxxxx.github.io/2021/11/14/dbs-note-2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Linyx","link":"链接: ","source":"来源: 二零拾肆","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-11-14 11:05:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}const fontSizeVal = saveToLocal.get('global-font-size')
+if (fontSizeVal !== undefined) {
+  document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+}})()</script><link rel="stylesheet" href="//at.alicdn.com/t/font_2304165_mthx92dd7j.css"><meta name="generator" content="Hexo 5.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/images/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-flask"></i><span> 实验室</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="https://linyxxxxx.github.io/lab/2048/"><i class="fa-fw fas fa-gamepad"></i><span> 2048Game</span></a></li><li><a class="site-page" href="/2021/04/17/cocos-wizard/"><i class="fa-fw fas fa-gamepad"></i><span> WIZARD</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 我-</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/me/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></li><li><a class="site-page" href="/opinion"><i class="fa-fw fas fa-signature"></i><span> 随想</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">二零拾肆</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-flask"></i><span> 实验室</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="https://linyxxxxx.github.io/lab/2048/"><i class="fa-fw fas fa-gamepad"></i><span> 2048Game</span></a></li><li><a class="site-page" href="/2021/04/17/cocos-wizard/"><i class="fa-fw fas fa-gamepad"></i><span> WIZARD</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 我-</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/me/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></li><li><a class="site-page" href="/opinion"><i class="fa-fw fas fa-signature"></i><span> 随想</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数据库笔记#2：关系数据库</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-11-14T02:05:56.000Z" title="发表于 2021-11-14 10:05:56">2021-11-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-11-14T03:05:57.706Z" title="更新于 2021-11-14 11:05:57">2021-11-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">数据库学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">808</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="关系数据结构及形式化定义"><a class="markdownIt-Anchor" href="#关系数据结构及形式化定义"></a> 关系数据结构及形式化定义</h2>
+<ul>
+<li>关系模型 = 关系数据结构 + 关系操作集合 + 关系完整性约束</li>
+<li>关系的三种类型：基本关系（实际存储数据的逻辑表示）、查询表（查询结果的表）、视图（虚表）</li>
+</ul>
+<h3 id="基本关系的六个性质三列两行一分量"><a class="markdownIt-Anchor" href="#基本关系的六个性质三列两行一分量"></a> 基本关系的六个性质：三列两行一分量</h3>
+<ul>
+<li>列是同质的</li>
+<li>不同的列可以出自同一个域，每一列为一个属性，不同属性给予不同属性名</li>
+<li>列的次序可以任意交换</li>
+<li>任意两个元组的候选码不能相同</li>
+<li>行的次序可以任意交换</li>
+<li>分量必须取原子值，即每一分量是不可分的数据项 👈规范化的最基本条件</li>
+</ul>
+<h3 id="关系模式"><a class="markdownIt-Anchor" href="#关系模式"></a> 关系模式</h3>
+<ul>
+<li>关系模式的形式化定义：五元组 R ( U, D, DOM, F )
+<ul>
+<li>R：关系名</li>
+<li>U：关系的属性名集合</li>
+<li>D：U中属性所来自的DOM属性向域的映象集合（？）</li>
+<li>F：属性间的数据依赖关系集合</li>
+<li>简记为R(U)</li>
+</ul>
+</li>
+</ul>
+<h2 id="关系操作"><a class="markdownIt-Anchor" href="#关系操作"></a> 关系操作</h2>
+<ul>
+<li>基本关系操作：选择、投影、并、差、笛卡尔积</li>
+</ul>
+<h2 id="关系的完整性"><a class="markdownIt-Anchor" href="#关系的完整性"></a> 关系的完整性</h2>
+<p>完整性约束：</p>
+<ol>
+<li>实体完整性：若属性A是基本关系R的主属性，则A不能取空值</li>
+<li>参照完整性：若属性F是基本关系R的外码，与它基本关系S的主码Ks相对应，则对于R中每个元组在F上的值必须为：
+<ul>
+<li>或者取空值（F的每个属性值均为空值）</li>
+<li>或者等于S中某个元组的主码值</li>
+</ul>
+</li>
+</ol>
+<h2 id="关系代数"><a class="markdownIt-Anchor" href="#关系代数"></a> 关系代数</h2>
+<h3 id="并"><a class="markdownIt-Anchor" href="#并"></a> 并</h3>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mo>∪</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">R\cup S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span></p>
+<blockquote>
+<p>两张表元组的并集</p>
+</blockquote>
+<h3 id="交"><a class="markdownIt-Anchor" href="#交"></a> 交</h3>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mo>∩</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">R\cap S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∩</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span></p>
+<blockquote>
+<p>两张表元组的交集</p>
+</blockquote>
+<h3 id="差"><a class="markdownIt-Anchor" href="#差"></a> 差</h3>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mo>−</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">R-S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span></p>
+<blockquote>
+<p>两张表元组的差集</p>
+</blockquote>
+<h3 id="笛卡尔积"><a class="markdownIt-Anchor" href="#笛卡尔积"></a> 笛卡尔积</h3>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mo>×</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">R\times S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span></p>
+<blockquote>
+<p>将两张表的属性横向拼接，然后对元组进行全组合</p>
+</blockquote>
+<h3 id="象集"><a class="markdownIt-Anchor" href="#象集"></a> 象集</h3>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>Z</mi><mi>x</mi></msub></mrow><annotation encoding="application/x-tex">Z_x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">Z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></p>
+<blockquote>
+<p>比如有关系 R(X,Z) 如下表，那么 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>Z</mi><msub><mi>x</mi><mn>1</mn></msub></msub></mrow><annotation encoding="application/x-tex">Z_{x_1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.93343em;vertical-align:-0.2501em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">Z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139199999999997em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span></span></span></span> 就是在所有元组中，X属性为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 的元组的Z属性的集合</p>
+<img src="/2021/11/14/dbs-note-2/1.png" class>
+</blockquote>
+<h3 id="选择"><a class="markdownIt-Anchor" href="#选择"></a> 选择</h3>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>σ</mi><mstyle mathsize="0.5em"><mi>F</mi></mstyle></msub><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\sigma_{\tiny F}(R)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.191665em;"><span style="top:-2.35em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault sizing reset-size3 size1" style="margin-right:0.13889em;">F</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">)</span></span></span></span></p>
+<blockquote>
+<p>SELECT * FROM R WHERE F</p>
+</blockquote>
+<h3 id="投影"><a class="markdownIt-Anchor" href="#投影"></a> 投影</h3>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mo>∏</mo><mstyle mathsize="0.5em"><mi>A</mi></mstyle></msub><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\prod_{\tiny A}(R)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0497100000000001em;vertical-align:-0.29971000000000003em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∏</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.041954999999999965em;"><span style="top:-2.20029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault sizing reset-size3 size1">A</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">)</span></span></span></span></p>
+<blockquote>
+<p>SELECT A FROM R</p>
+</blockquote>
+<h3 id="连接"><a class="markdownIt-Anchor" href="#连接"></a> 连接</h3>
+<ul>
+<li>等值连接 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><msub><mo>⋈</mo><mrow><mi>A</mi><mo>=</mo><mi>B</mi></mrow></msub><mi>S</mi></mrow><annotation encoding="application/x-tex">R\bowtie_{A=B} S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel"><span class="mrel">⋈</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">A</span><span class="mrel mtight">=</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span></li>
+<li>自然连接 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mo>⋈</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">R\bowtie S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68833em;vertical-align:-0.005em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">⋈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span> ：特殊的等值连接，去除了重复的属性列</li>
+<li>全外连接 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mi mathvariant="normal">⟗</mi><mi>S</mi></mrow><annotation encoding="application/x-tex">R⟗S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord">⟗</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span> ：保留所有悬浮元组</li>
+<li>左外连接 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mi mathvariant="normal">⟕</mi><mi>S</mi></mrow><annotation encoding="application/x-tex">R⟕S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord">⟕</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span> ：保留R的悬浮元组</li>
+<li>右外连接 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mi mathvariant="normal">⟖</mi><mi>S</mi></mrow><annotation encoding="application/x-tex">R⟖S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord">⟖</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span> ：保留S的悬浮元组</li>
+</ul>
+<blockquote>
+<p>用于多表查询</p>
+</blockquote>
+<h3 id="除"><a class="markdownIt-Anchor" href="#除"></a> 除</h3>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mo>÷</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">R\div S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span></p>
+<blockquote>
+<p>对于S表中所有R中存在的属性，其值在R中某个值有对应的所有元组，算了我讲不明白，直接看例子吧：</p>
+<img src="/2021/11/14/dbs-note-2/2.png" class>
+<p>R和S共有的是B和C，S在B,C上的分量为 <strong>{(b1,c2), (b2,c1), (b2,c3)}</strong> 。此时再看R表：a1的象集为 <strong>{(b1,c2), (b2,c1), (b2,c3)}</strong> ，a2的象集为{(b3,c7), (b2,c3)} ，a3的象集为{(b4,c6)} ，a4的象集为{(b6,c6)} 。故a1即为R除S的结果。</p>
+<p>这玩意的用法：</p>
+<ul>
+<li>例1：找出选修了所有课程的学生：学生 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>÷</mo></mrow><annotation encoding="application/x-tex">\div</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord">÷</span></span></span></span> 所有课程</li>
+<li>例2：找出选修了所有张三所选课的学生： 学生 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>÷</mo></mrow><annotation encoding="application/x-tex">\div</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord">÷</span></span></span></span> 张三所选课</li>
+</ul>
+<p>一般用于 <strong>“所有”</strong> 的查询</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Linyx</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://linyxxxxx.github.io/2021/11/14/dbs-note-2/">https://linyxxxxx.github.io/2021/11/14/dbs-note-2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://linyxxxxx.github.io" target="_blank">二零拾肆</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/11/14/latex-collection/"><img class="prev-cover" src="https://i.loli.net/2021/11/14/nm5NVfGjF6d4zet.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">常用LaTeX汇总</div></div></a></div><div class="next-post pull-right"><a href="/2021/11/07/dbs-note-1/"><img class="next-cover" src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">数据库笔记#1：绪论</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/04/04/CG-1/" title="使用OpenGL读取ply文件并构建模型"><img class="cover" src="https://i.loli.net/2021/04/04/ctrlBhgF2uq7Xda.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-04</div><div class="title">使用OpenGL读取ply文件并构建模型</div></div></a></div><div><a href="/2021/05/09/cg-note-01/" title="图形学学习笔记#1:变换"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-09</div><div class="title">图形学学习笔记#1:变换</div></div></a></div><div><a href="/2021/05/16/cg-note-02/" title="图形学学习笔记#2:明暗着色"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-16</div><div class="title">图形学学习笔记#2:明暗着色</div></div></a></div><div><a href="/2021/05/23/cg-note-03/" title="图形学学习笔记#3:光线追踪"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-23</div><div class="title">图形学学习笔记#3:光线追踪</div></div></a></div><div><a href="/2021/06/18/cg-note-04/" title="图形学学习笔记#4:杂"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-18</div><div class="title">图形学学习笔记#4:杂</div></div></a></div><div><a href="/2021/10/31/computer-networking-note-1/" title="计网笔记#1：概论"><img class="cover" src="https://i.loli.net/2021/10/31/KeLOvCzsu6pRwUn.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-31</div><div class="title">计网笔记#1：概论</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Linyx</div><div class="author-info__description">哀吾生之须臾</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Linyxxxxx/"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Linyxxxxx/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://weibo.com/5239240464/" target="_blank" title="Weibo"><i class="fab fa-weibo"></i></a><a class="social-icon" href="https://www.zhihu.com/people/lin-30-65/" target="_blank" title="Zhihu"><i class="iconfont icon-29"></i></a><a class="social-icon" href="https://steamcommunity.com/profiles/76561198147249500/" target="_blank" title="Steam"><i class="fab fa-steam"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">Linyx.tk上不去了,大概是用來托管的Vercel挂了,先將就一下來這裏玩玩吧:https://linyxxxxx-github-io.vercel.app/。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%BD%A2%E5%BC%8F%E5%8C%96%E5%AE%9A%E4%B9%89"><span class="toc-number">1.</span> <span class="toc-text"> 关系数据结构及形式化定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%85%B3%E7%B3%BB%E7%9A%84%E5%85%AD%E4%B8%AA%E6%80%A7%E8%B4%A8%E4%B8%89%E5%88%97%E4%B8%A4%E8%A1%8C%E4%B8%80%E5%88%86%E9%87%8F"><span class="toc-number">1.1.</span> <span class="toc-text"> 基本关系的六个性质：三列两行一分量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text"> 关系模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text"> 关系操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-number">3.</span> <span class="toc-text"> 关系的完整性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text"> 关系代数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B6"><span class="toc-number">4.1.</span> <span class="toc-text"> 并</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4"><span class="toc-number">4.2.</span> <span class="toc-text"> 交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE"><span class="toc-number">4.3.</span> <span class="toc-text"> 差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%9B%E5%8D%A1%E5%B0%94%E7%A7%AF"><span class="toc-number">4.4.</span> <span class="toc-text"> 笛卡尔积</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B1%A1%E9%9B%86"><span class="toc-number">4.5.</span> <span class="toc-text"> 象集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9"><span class="toc-number">4.6.</span> <span class="toc-text"> 选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%95%E5%BD%B1"><span class="toc-number">4.7.</span> <span class="toc-text"> 投影</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5"><span class="toc-number">4.8.</span> <span class="toc-text"> 连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%A4"><span class="toc-number">4.9.</span> <span class="toc-text"> 除</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验"><img src="https://s2.loli.net/2022/02/10/jNZFLl8TygBi1rR.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="双人成行:老套的剧情,全新的体验"/></a><div class="content"><a class="title" href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验">双人成行:老套的剧情,全新的体验</a><time datetime="2022-02-10T02:34:05.000Z" title="发表于 2022-02-10 10:34:05">2022-02-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/20/my-2021/" title="二零贰壹"><img src="https://i.loli.net/2021/02/11/ncoG4Sj93xXJkP6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二零贰壹"/></a><div class="content"><a class="title" href="/2021/12/20/my-2021/" title="二零贰壹">二零贰壹</a><time datetime="2021-12-20T12:33:31.000Z" title="发表于 2021-12-20 20:33:31">2021-12-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置"><img src="https://i.loli.net/2020/12/31/fq97o1pgd4mOtzk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Eclipse-Java-SceneBuilder开发环境配置"/></a><div class="content"><a class="title" href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置">Eclipse-Java-SceneBuilder开发环境配置</a><time datetime="2021-12-04T11:25:23.000Z" title="发表于 2021-12-04 19:25:23">2021-12-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性"><img src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#5：数据库完整性"/></a><div class="content"><a class="title" href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性">数据库笔记#5：数据库完整性</a><time datetime="2021-11-20T07:02:03.000Z" title="发表于 2021-11-20 15:02:03">2021-11-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性"><img src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#4：数据库安全性"/></a><div class="content"><a class="title" href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性">数据库笔记#4：数据库安全性</a><time datetime="2021-11-18T01:25:28.000Z" title="发表于 2021-11-18 09:25:28">2021-11-18</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Linyx</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', '', 'katex-wrap')
+  })
+})()</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script id="canvas_nest" defer="defer" color="255,182,185" opacity="0.6" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div></body></html>

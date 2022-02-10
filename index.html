@@ -1,0 +1,441 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>二零拾肆</title><meta name="author" content="Linyx"><meta name="copyright" content="Linyx"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="哀吾生之须臾">
+<meta property="og:type" content="website">
+<meta property="og:title" content="二零拾肆">
+<meta property="og:url" content="https://linyxxxxx.github.io/index.html">
+<meta property="og:site_name" content="二零拾肆">
+<meta property="og:description" content="哀吾生之须臾">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://linyxxxxx.github.io/images/avatar.png">
+<meta property="article:author" content="Linyx">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://linyxxxxx.github.io/images/avatar.png"><link rel="shortcut icon" href="/images/icons/favicon-32x32.png"><link rel="canonical" href="https://linyxxxxx.github.io/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Linyx","link":"链接: ","source":"来源: 二零拾肆","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-02-10 12:25:17'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}const fontSizeVal = saveToLocal.get('global-font-size')
+if (fontSizeVal !== undefined) {
+  document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+}})()</script><link rel="stylesheet" href="//at.alicdn.com/t/font_2304165_mthx92dd7j.css"><meta name="generator" content="Hexo 5.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/images/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-flask"></i><span> 实验室</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="https://linyxxxxx.github.io/lab/2048/"><i class="fa-fw fas fa-gamepad"></i><span> 2048Game</span></a></li><li><a class="site-page" href="/2021/04/17/cocos-wizard/"><i class="fa-fw fas fa-gamepad"></i><span> WIZARD</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 我-</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/me/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></li><li><a class="site-page" href="/opinion"><i class="fa-fw fas fa-signature"></i><span> 随想</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(https://i.loli.net/2020/12/31/fq97o1pgd4mOtzk.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">二零拾肆</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-flask"></i><span> 实验室</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="https://linyxxxxx.github.io/lab/2048/"><i class="fa-fw fas fa-gamepad"></i><span> 2048Game</span></a></li><li><a class="site-page" href="/2021/04/17/cocos-wizard/"><i class="fa-fw fas fa-gamepad"></i><span> WIZARD</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 我-</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/me/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></li><li><a class="site-page" href="/opinion"><i class="fa-fw fas fa-signature"></i><span> 随想</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">二零拾肆</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/Linyxxxxx/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://weibo.com/5239240464/" target="_blank" title="Weibo"><i class="fab fa-weibo"></i></a><a class="social-icon" href="https://www.zhihu.com/people/lin-30-65/" target="_blank" title="Zhihu"><i class="iconfont icon-29"></i></a><a class="social-icon" href="https://steamcommunity.com/profiles/76561198147249500/" target="_blank" title="Steam"><i class="fab fa-steam"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验">     <img class="post_bg" src="https://s2.loli.net/2022/02/10/jNZFLl8TygBi1rR.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="双人成行:老套的剧情,全新的体验"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验">双人成行:老套的剧情,全新的体验</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-02-10T02:34:05.000Z" title="发表于 2022-02-10 10:34:05">2022-02-10</time></span></div><div class="content">之前总是听说双人成行的大名，但苦于没人一同游玩。
+这个寒假，突然发现XGP里收录了双人成行，又赶上其刚斩获TGA年度游戏，遂与Flavia一口气通关了剧情，除去等待用时，总流程13小时。
+游玩结束后，这部作品给我的整体感受是：建立在老套元素之上，却又不拘泥于传统，做出了无数创新的佳作。
+ 整体评分
+对于这部作品，我给出了以下主观评分（满分6.0）：
+ 画面（6.0）
+游戏画面给我的整体感觉就是两个字：大气。
+在背景设定中：两位主角的灵魂被禁锢于两个娃娃中，所以环境中的一切物品都十分巨大，也因此可以让我在远处看到一幅幅气势磅礴的画卷，又在近处仔细欣赏建模的细节。
+此外，游戏的摄像机镜头是一大加分项。其并不拘泥于传统游戏的单视角设计，而是在不同关卡选择了不同的视角：大部分流程的第三人称跟踪视角、在剑盾与魔法地下城部分的2D俯视角、横板过关的2D侧视角以及少量的3D仰视角和第三人称反向视角。
+这些视角的变化除了使玩家获得更丰富的游戏体验，在一定程度上也是对其他作品的致敬。比如在地下城章节中，玩家UI中被加入了传统的技能/血条/蓄力条元素，结合起俯视角的摄像机，能使玩家眼前一亮，一眼明白该部分 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2021/12/20/my-2021/" title="二零贰壹">     <img class="post_bg" src="https://i.loli.net/2021/02/11/ncoG4Sj93xXJkP6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二零贰壹"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/12/20/my-2021/" title="二零贰壹">二零贰壹</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-12-20T12:33:31.000Z" title="发表于 2021-12-20 20:33:31">2021-12-20</time></span></div><div class="content">…
+疫情还在延续。
+城市笼罩在无尽的阴霾之下，粉尘过敏和鼻炎为我拉开了2021的序幕。
+自从出现了疫情，行人的笑容总是被掩埋在口罩之下，世界在我眼中逐渐变得不如往日生动，我也逐渐变得不如以前快乐，浑浑噩噩地进入了新的一年。
+ 树莓
+2021，于我而言，是全新的一年。
+新的生活、新的技能，当然还有一群新的老友。
+面对本科生涯的分岔口，我在几经徘徊后还是选择了树莓专业。没想到刚分完专业没多久就听说树莓以后要并入电影学院… 差点给我这个铁血软院人整破防。所幸那都是两三年后的事情了，我还是能继续我的工科之路。
+尽管在踏入树莓之时跌跌撞撞，但现在回想起来，还是不免庆幸，选择树莓真是我本科生涯最幸运的决定之一。倒不是因为树莓的课程轻松或是学习压力小，仅仅是因为在树莓遇到了五个有趣的小伙伴。
+ 第一页
+
+以下内容攻击性较强，请文中提到的相关人士谨慎阅读🤝
+
+那一学期有三门课需要小组合作，正当我愁于在树莓没有熟人组队之时，以前认识的一个焦虑boy甲鱼找到了我。受他的邀请，参与了与Jolin和小苗组成的小组。另一门课的队伍要求为五人，于是又拉入了他们了他们的老朋友茹子姐；而在游戏课则需要六人，于是与她 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置">     <img class="post_bg" src="https://i.loli.net/2020/12/31/fq97o1pgd4mOtzk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Eclipse-Java-SceneBuilder开发环境配置"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置">Eclipse-Java-SceneBuilder开发环境配置</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-12-04T11:25:23.000Z" title="发表于 2021-12-04 19:25:23">2021-12-04</time></span></div><div class="content"> JavaFX
+ 连接JavaFx SDK
+首先准备好JDK和JavaFX-SDK，JavaFX-SDK中有 /bin/ /legal/ /lib/ 三个文件夹。
+进入Eclipse，Window -&gt; Preferences -&gt; Java -&gt; Build Path -&gt; User Libraries 。New一个新的Library，名字任取。
+然后按以下顺序，先选择刚才创建的Library，点Add External JARs，选中SDK中/lib/文件夹下的所有文件（除了src.zip），最后点Apply and close。
+
+ 引入项目
+现在在Eclipse中打开或者新建好项目，然后右键项目，进入 Build Path -&gt; Add Libraries ，选择 User Library ，然后勾选上刚才创建的那个Library，Finish。
+此时在左侧可以看到Library被顺利引入。
+
+ VM参数
+这时一切正常的话，代码中应该可以顺利import相关包，并且不会报错，但是运行起来依旧会报错。
+此时只需找到菜单栏的 Run -&gt; Run ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性">     <img class="post_bg" src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#5：数据库完整性"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性">数据库笔记#5：数据库完整性</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-11-20T07:02:03.000Z" title="发表于 2021-11-20 15:02:03">2021-11-20</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">数据库学习笔记</a></span></div><div class="content"> 实体完整性
+
+
+检查主码值是否唯一，如果不唯一则拒绝插入或修改
+
+
+检查主码的各个属性是否为空，只要有一个为空就拒绝插入或修改
+
+
+为避免对基本表进行全表扫描，RDMBS核心一般都在主码上自动建立一个 索引
+
+
+ 参照完整性
+
+外码，一个参照完整性将两个表中的相应元组联系起来
+对被参照表和参照表进行增删改的时候有可能破坏参照完整性，必须进行检查
+
+ 用户定义的完整性
+
+针对某一具体应用的数据必须满足的语义要求
+
+属性上的：NOT NULL、UNIQUE或CHECK
+元组上的：CREATE TABLE的CHECK
+
+
+
+ 完整性约束命名字句
+1CONSTRAINT &lt;完整性约束条件名&gt; &lt;完整性约束条件&gt;;
+
+完整性约束条件包括：NOT NULL 、 UNIQUE 、 PRIMARY KEY() 、 FOREIGN KEY() REFERENCES 、 CHECK
+查询 NOT NULL 和 CHECK 约束，使用字段 SEARCH_CONDITION
+查询 UNIQUE 和 PRIMARY KEY 约束，使用字段 INDEX_NAME
+
+ 断言
+1CREATE ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性">     <img class="post_bg" src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#4：数据库安全性"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性">数据库笔记#4：数据库安全性</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-11-18T01:25:28.000Z" title="发表于 2021-11-18 09:25:28">2021-11-18</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">数据库学习笔记</a></span></div><div class="content"> TCSEC标准
+
+D：如DOS，几乎没有专门的机制
+C1：实现自主存取控制DAC
+C2：安全产品的最低档次，实现审计和资源隔离
+B1：标记安全保护，实现强制存取控制MAC、审计、TCSEC/TDI
+B2：结构化保护，建立形式化的安全策略模型
+B3
+A1：给出系统的形式化设计说明和验证
+
+ 数据库安全性控制
+
+常用方法：用户标识和鉴定、存取控制、视图、审计、数据加密
+
+ 存取控制
+存取控制机制主要包括 定义用户权限 和 合法权限检查 两部分
+实现MAC时要 首先实现 DAC
+ 自主存取控制DAC
+
+C2
+用户对不同的数据对象有不同的存取权限
+不同的用户对同一对象也有不同的权限
+用户还可以将其拥有的存取权限转授给其他用户
+
+1GRANT &lt;权限&gt; ON &lt;对象类型&gt; &lt;对象名&gt; TO &lt;用户&gt; [WITH GRANT OPTION];
+1REVOKE &lt;权限&gt; ON &lt;对象类型&gt; &lt;对象名&gt; FROM &lt;用户&gt; [CASCADE | RESTRICT];
+1CREATE USER &lt;用户 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2021/11/14/dbs-note-3/" title="数据库笔记#3：SQL">     <img class="post_bg" src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#3：SQL"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/11/14/dbs-note-3/" title="数据库笔记#3：SQL">数据库笔记#3：SQL</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-11-14T06:56:48.000Z" title="发表于 2021-11-14 14:56:48">2021-11-14</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">数据库学习笔记</a></span></div><div class="content"> 数据定义
+ 定义模式
+1CREATE SCHEMA &lt;模式名&gt; AUTHORIZATION &lt;用户名&gt; [&lt;CREATE TABLE...&gt;|&lt;CREATE VIEW...&gt;|&lt;GRANT...&gt;];
+ 删除模式
+1DROP SCHEMA &lt;模式名&gt; &lt;CASCADE|RESTRICT&gt;;
+
+CASCADE模式：把该模式中的所有数据库对象全部删除
+RESTRICT模式：如果该模式中定义了下属的数据库对象，就拒绝执行该语句
+
+ 定义表
+1CREATE TABLE &lt;表名&gt;(&lt;列名&gt; &lt;数据类型&gt; [&lt;列级完整性约束&gt;] +);
+1234567-- EXAMPLECREATE TABLE STUDENT(    SNO CHAR(9) PRIMARY KEY /*主码*/    SNAME CHAR(20) UNIQUE /*唯一取值*/    SAGE SMALLINT    FOREIGN KEY(CPNO) REFERENCES COURSE(CNO) ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2021/11/14/latex-collection/" title="常用LaTeX汇总">     <img class="post_bg" src="https://i.loli.net/2021/11/14/nm5NVfGjF6d4zet.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="常用LaTeX汇总"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/11/14/latex-collection/" title="常用LaTeX汇总">常用LaTeX汇总</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-11-14T03:07:06.000Z" title="发表于 2021-11-14 11:07:06">2021-11-14</time></span></div><div class="content"> 关系代数
+
+
+
+中文
+符号
+LaTeX
+中文
+符号
+LaTeX
+
+
+
+
+投影
+∏\prod∏
+\prod
+选择
+σ\sigmaσ
+\sigma
+
+
+交
+∩\cap∩
+\cap
+并
+∪\cup∪
+\cup
+
+
+自然连接
+⋈\bowtie⋈
+\bowtie
+全外连接
+⟗
+
+
+
+左外连接
+⟕
+
+右外连接
+⟖
+
+
+
+笛卡尔积
+×\times×
+\times
+除
+÷\div÷
+\div
+
+
+
+</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2021/11/14/dbs-note-2/" title="数据库笔记#2：关系数据库">     <img class="post_bg" src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#2：关系数据库"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/11/14/dbs-note-2/" title="数据库笔记#2：关系数据库">数据库笔记#2：关系数据库</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-11-14T02:05:56.000Z" title="发表于 2021-11-14 10:05:56">2021-11-14</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">数据库学习笔记</a></span></div><div class="content"> 关系数据结构及形式化定义
+
+关系模型 = 关系数据结构 + 关系操作集合 + 关系完整性约束
+关系的三种类型：基本关系（实际存储数据的逻辑表示）、查询表（查询结果的表）、视图（虚表）
+
+ 基本关系的六个性质：三列两行一分量
+
+列是同质的
+不同的列可以出自同一个域，每一列为一个属性，不同属性给予不同属性名
+列的次序可以任意交换
+任意两个元组的候选码不能相同
+行的次序可以任意交换
+分量必须取原子值，即每一分量是不可分的数据项 👈规范化的最基本条件
+
+ 关系模式
+
+关系模式的形式化定义：五元组 R ( U, D, DOM, F )
+
+R：关系名
+U：关系的属性名集合
+D：U中属性所来自的DOM属性向域的映象集合（？）
+F：属性间的数据依赖关系集合
+简记为R(U)
+
+
+
+ 关系操作
+
+基本关系操作：选择、投影、并、差、笛卡尔积
+
+ 关系的完整性
+完整性约束：
+
+实体完整性：若属性A是基本关系R的主属性，则A不能取空值
+参照完整性：若属性F是基本关系R的外码，与它基本关系S的主码Ks相对应，则对于R中每个元组在F上的值必须为：
+
+或者取空值（F的每个属性值均为空值）
+或者等于S中某个元组的主 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2021/11/07/dbs-note-1/" title="数据库笔记#1：绪论">     <img class="post_bg" src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#1：绪论"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/11/07/dbs-note-1/" title="数据库笔记#1：绪论">数据库笔记#1：绪论</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-11-07T03:02:38.000Z" title="发表于 2021-11-07 11:02:38">2021-11-07</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">数据库学习笔记</a></span></div><div class="content"> 数据库系统概述
+ 数据DATA
+
+描述事物的 符号记录 ，数据库中 存储的基本对象
+数据格式 在不同的模型中表现不同：概念模型、物理模型
+与其 语义 （数据的含义）不可分
+
+ 数据库DB
+
+长期储存 在计算机内的、 有组织的 、 可共享的 大量数据的集合
+数据按一定的 数据模型 组织、描述和储存
+
+ 数据库管理系统DBMS
+
+位于用户与操作系统之间的一层 数据管理软件 ；是基础软件，一个大型复杂的 软件系统 ；为用户或应用程序提供 DB的建立、查询、更新及各种数据控制
+总是基于某种数据模型，如层次型、网状型、关系型和面向对象型等
+功能：数据定义DL、数据操纵DM（增删改查）、数据控制DC、数据服务DS、供DBA使用的监视与管理工具包
+数据子语言：DDL、DML、DCL
+数据子语言的结构形式：交互式命令语言、宿主型语言
+
+ 数据库系统DBS
+
+实现有组织地、动态地存储大量关联数据、方便多用户访问地计算机 硬件、软件和数据资源 组成的系统
+构成：DB、DBMS、应用系统、DBA、USER
+
+ 数据管理技术的三个发展阶段
+
+整体数据的结构化 是数据库与文件系统的本质差别
+ 数据库系统的特点 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2021/11/01/computer-networking-note-3/" title="计网笔记#3：数据链路层">     <img class="post_bg" src="https://i.loli.net/2021/10/31/KeLOvCzsu6pRwUn.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计网笔记#3：数据链路层"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/11/01/computer-networking-note-3/" title="计网笔记#3：数据链路层">计网笔记#3：数据链路层</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-11-01T10:33:15.000Z" title="发表于 2021-11-01 18:33:15">2021-11-01</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">计算机网络学习笔记</a></span></div><div class="content"> 概述
+数据链路层使用的信道主要有以下两种类型：
+
+点对点信道
+广播信道
+
+ 使用点对点信道的数据链路层
+
+链路link：一条无源的点到点的物理线路段，中间没有任何其他的交换结点。一条链路只是一条通路的一个组成部分。
+数据链路：链路 + 控制数据传输通信协议的硬件和软件。最常用的方法是使用适配器（网卡）。
+数据链路层中传输的数据单位是 帧 。
+
+ 数据链路层的三个基本问题——封装成帧、透明传输、差错控制
+ 封装成帧与透明传输
+
+封装成帧就是在数据的前后添加首部（帧开始符）和尾部（帧结束符），添加完的这玩意就叫做一个帧。
+首部和尾部的一个重要作用就是进行 帧定界 。
+然而，如果在原数据中出现了与帧开始符或帧结束符相同的字符，在传输的时候就会识别错误，这就是透明传输问题。要解决这种问题，就可以在 数据中 的控制字符前面添加一个转义字符，而接收端在收到数据后只需删除这些转义字符就可以正确识别，如果转义字符也出现在数据里，就用转义字符对转义字符转义。这种方法被称为 字节填充法 。
+
+ 差错检测
+
+传输过程中可能产生 比特差错 ，在一段时间内传输错误的比特占所传输比特总数的概率被称为 误码率BE ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Linyx</div><div class="author-info__description">哀吾生之须臾</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Linyxxxxx/"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Linyxxxxx/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://weibo.com/5239240464/" target="_blank" title="Weibo"><i class="fab fa-weibo"></i></a><a class="social-icon" href="https://www.zhihu.com/people/lin-30-65/" target="_blank" title="Zhihu"><i class="iconfont icon-29"></i></a><a class="social-icon" href="https://steamcommunity.com/profiles/76561198147249500/" target="_blank" title="Steam"><i class="fab fa-steam"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">Linyx.tk上不去了,大概是用來托管的Vercel挂了,先將就一下來這裏玩玩吧:https://linyxxxxx-github-io.vercel.app/。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验"><img src="https://s2.loli.net/2022/02/10/jNZFLl8TygBi1rR.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="双人成行:老套的剧情,全新的体验"/></a><div class="content"><a class="title" href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验">双人成行:老套的剧情,全新的体验</a><time datetime="2022-02-10T02:34:05.000Z" title="发表于 2022-02-10 10:34:05">2022-02-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/20/my-2021/" title="二零贰壹"><img src="https://i.loli.net/2021/02/11/ncoG4Sj93xXJkP6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二零贰壹"/></a><div class="content"><a class="title" href="/2021/12/20/my-2021/" title="二零贰壹">二零贰壹</a><time datetime="2021-12-20T12:33:31.000Z" title="发表于 2021-12-20 20:33:31">2021-12-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置"><img src="https://i.loli.net/2020/12/31/fq97o1pgd4mOtzk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Eclipse-Java-SceneBuilder开发环境配置"/></a><div class="content"><a class="title" href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置">Eclipse-Java-SceneBuilder开发环境配置</a><time datetime="2021-12-04T11:25:23.000Z" title="发表于 2021-12-04 19:25:23">2021-12-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性"><img src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#5：数据库完整性"/></a><div class="content"><a class="title" href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性">数据库笔记#5：数据库完整性</a><time datetime="2021-11-20T07:02:03.000Z" title="发表于 2021-11-20 15:02:03">2021-11-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性"><img src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#4：数据库安全性"/></a><div class="content"><a class="title" href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性">数据库笔记#4：数据库安全性</a><time datetime="2021-11-18T01:25:28.000Z" title="发表于 2021-11-18 09:25:28">2021-11-18</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/C-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">C#实验笔记</span><span class="card-category-list-count">5</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/XML%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">XML学习笔记</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"><span class="card-category-list-name">从零开始的个人博客</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">图形学学习笔记</span><span class="card-category-list-count">5</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">数字图像处理学习笔记</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">数据库学习笔记</span><span class="card-category-list-count">5</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">数据结构与算法学习笔记</span><span class="card-category-list-count">21</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E6%A2%B0%E9%94%AE%E7%9B%98/"><span class="card-category-list-name">机械键盘</span><span class="card-category-list-count">2</span></a></li>
+            <li class="card-category-list-item more is-center"><a class="card-category-list-link-more" href="/categories/">
+                <span>查看更多</span><i class="fas fa-angle-right"></i></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E5%A4%96%E8%AE%BE/" style="font-size: 1.1em; color: #999">外设</a> <a href="/tags/%E6%B8%B8%E6%88%8F/" style="font-size: 1.23em; color: #999ea6">游戏</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 1.37em; color: #99a4b2">编程</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/" style="font-size: 1.5em; color: #99a9bf">计算机</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/02/"><span class="card-archive-list-date">二月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/12/"><span class="card-archive-list-date">十二月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/11/"><span class="card-archive-list-date">十一月 2021</span><span class="card-archive-list-count">7</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/10/"><span class="card-archive-list-date">十月 2021</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/09/"><span class="card-archive-list-date">九月 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/06/"><span class="card-archive-list-date">六月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/05/"><span class="card-archive-list-date">五月 2021</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/04/"><span class="card-archive-list-date">四月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item more is-center"><a class="card-archive-list-link-more" href="/archives/">
+              <span>查看更多</span><i class="fas fa-angle-right"  ></i></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">67</div></div><div class="webinfo-item"><div class="item-name">已运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2020-09-28T04:00:00.000Z"></div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">113.5k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-02-10T04:25:16.584Z"></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://i.loli.net/2020/12/31/fq97o1pgd4mOtzk.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Linyx</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>function subtitleType () {
+  if (true) { 
+    var typed = new Typed("#subtitle", {
+      strings: "Look how they shine for you.,相信自己.,一切都会好起来的.".split(","),
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50
+    })
+  } else {
+    document.getElementById("subtitle").innerHTML = 'Look how they shine for you.'
+  }
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script id="canvas_nest" defer="defer" color="255,182,185" opacity="0.6" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div></body></html>

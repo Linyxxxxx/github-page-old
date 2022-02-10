@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>数据结构算法笔记#3.1:图 | 二零拾肆</title><meta name="keywords" content="编程,计算机"><meta name="author" content="Linyx"><meta name="copyright" content="Linyx"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="结束了树的部分，我们终于迎来了图。 不论是在算法或是在离散数学中，图都是一种很重要的结构：后续的DFS、BFS以及最小生成树等重要算法都需要建立在图的基础上。 这是图的第一篇笔记，我们就先从图的概念以及邻接矩阵与邻接表入手。 一起走进图论的大坑（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构算法笔记#3.1:图">
+<meta property="og:url" content="https://linyxxxxx.github.io/2020/11/13/data-structure-study-note-12/index.html">
+<meta property="og:site_name" content="二零拾肆">
+<meta property="og:description" content="结束了树的部分，我们终于迎来了图。 不论是在算法或是在离散数学中，图都是一种很重要的结构：后续的DFS、BFS以及最小生成树等重要算法都需要建立在图的基础上。 这是图的第一篇笔记，我们就先从图的概念以及邻接矩阵与邻接表入手。 一起走进图论的大坑（">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/01/01/94UYcKo67ZX2vuS.png">
+<meta property="article:published_time" content="2020-11-13T07:02:53.000Z">
+<meta property="article:modified_time" content="2021-01-01T02:04:13.168Z">
+<meta property="article:author" content="Linyx">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="计算机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/01/94UYcKo67ZX2vuS.png"><link rel="shortcut icon" href="/images/icons/favicon-32x32.png"><link rel="canonical" href="https://linyxxxxx.github.io/2020/11/13/data-structure-study-note-12/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Linyx","link":"链接: ","source":"来源: 二零拾肆","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-01-01 10:04:13'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}const fontSizeVal = saveToLocal.get('global-font-size')
+if (fontSizeVal !== undefined) {
+  document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+}})()</script><link rel="stylesheet" href="//at.alicdn.com/t/font_2304165_mthx92dd7j.css"><meta name="generator" content="Hexo 5.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/images/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-flask"></i><span> 实验室</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="https://linyxxxxx.github.io/lab/2048/"><i class="fa-fw fas fa-gamepad"></i><span> 2048Game</span></a></li><li><a class="site-page" href="/2021/04/17/cocos-wizard/"><i class="fa-fw fas fa-gamepad"></i><span> WIZARD</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 我-</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/me/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></li><li><a class="site-page" href="/opinion"><i class="fa-fw fas fa-signature"></i><span> 随想</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2021/01/01/94UYcKo67ZX2vuS.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">二零拾肆</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-flask"></i><span> 实验室</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="https://linyxxxxx.github.io/lab/2048/"><i class="fa-fw fas fa-gamepad"></i><span> 2048Game</span></a></li><li><a class="site-page" href="/2021/04/17/cocos-wizard/"><i class="fa-fw fas fa-gamepad"></i><span> WIZARD</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 我-</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/me/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></li><li><a class="site-page" href="/opinion"><i class="fa-fw fas fa-signature"></i><span> 随想</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数据结构算法笔记#3.1:图</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-11-13T07:02:53.000Z" title="发表于 2020-11-13 15:02:53">2020-11-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-01T02:04:13.168Z" title="更新于 2021-01-01 10:04:13">2021-01-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">数据结构与算法学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>结束了树的部分，我们终于迎来了图。</p>
+<p>不论是在算法或是在离散数学中，图都是一种很重要的结构：后续的DFS、BFS以及最小生成树等重要算法都需要建立在图的基础上。</p>
+<p>这是图的第一篇笔记，我们就先从图的概念以及邻接矩阵与邻接表入手。</p>
+<p>一起走进图论的大坑（</p>
+<a id="more"></a>
+<h2 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h2>
+<p>图，是一种邻接关系较为复杂的数据结构。不同于表的有规律，树的层级性，图看起来较为零散。</p>
+<p>最基本的元素为<strong>顶点(Vertex)</strong> 与<strong>边(Edge)</strong> 。顶点，顾名思义，就是一个个存储数据的独立结点；而边，自然就是两个顶点之间的邻接关系。根据边的有向性，又可以将图分为<strong>无向图</strong>与<strong>有向图</strong> 。</p>
+<img src="/2020/11/13/data-structure-study-note-12/g1.png" class>
+<p>👆无向图</p>
+<img src="/2020/11/13/data-structure-study-note-12/g2.png" class>
+<p>👆有向图</p>
+<p>为了加以区分，一般将有向图的边称为<strong>弧(Arc)</strong> ，并将弧的起点终点分别称为&quot;弧头&quot;与&quot;弧尾&quot;。不过这些不太重要，平时大家还是都习惯称之为边。</p>
+<p>对于每条边都有<strong>权值</strong>的图，也被称为<strong>网</strong>，或是<strong>带权图</strong>。但是为了方便，一般情况还是默认称为图，而对于不带权值的图，则默认将权值都视为1。</p>
+<p>其他还有一些零星的概念，稍作了解，以后遇到的时候自然会明白：</p>
+<ul>
+<li><strong>度（Degree）</strong> ：一个顶点的度是指与该顶点相关联的边的条数，顶点v的度记作d(v)，分为入度与出度。</li>
+<li><strong>自环（Loop）</strong> ：若一条边的两个顶点为同一顶点，则此边称作自环。</li>
+<li><strong>回路</strong> ：若第一个顶点和最后一个顶点相同，则这条路径是一条回路。</li>
+<li><strong>简单路径</strong> ：若路径中顶点没有重复出现，则称这条路径为简单路径。</li>
+<li><strong>路径长度</strong> ：是指路径上边或弧的数目。</li>
+<li><strong>连通图</strong> ：在无向图中，如果从顶点vi到顶点vj有路径，则称vi和vj连通。如果图中任意两个顶点之间都连通，则称该图为连通图，否则，将其中的极大连通子图称为连通分量。</li>
+</ul>
+<p>基本概念介绍完了，接下来我们聊聊在程序中如何表示一个图。</p>
+<h2 id="基本结构"><a class="markdownIt-Anchor" href="#基本结构"></a> 基本结构</h2>
+<p>对于一张图，我们所需要的基本数据无非就是顶点与边。对于顶点，直接用一个数组将其转换为数字即可。而对于边，我们需要记录其<strong>起点、终点以及权值(长度)</strong> 。一般来说，有两种记录方法，一种是<strong>邻接矩阵</strong>，另一种是<strong>邻接表</strong> 。</p>
+<p>邻接矩阵应该比较好理解，如果有n个顶点，就创建一个n*n的矩阵，对于权值为w的边a-&gt;b，则将矩阵的[a][b]值置为w。而对于没有邻接关系的点，则将其值置为无穷。</p>
+<p>但如果图较为稀疏（即稀疏图），用邻接矩阵会浪费过多的空间。回想一下当时处理稀疏矩阵时的做法，我们可以如法炮制，用三元组来储存。但三元组数组最大的缺点就是难以顺序遍历，不巧的是，图就偏偏需要顺序遍历（比如DFS等算法），所以我们不能用简单的三元组数组来保存。而应该用一种类似于三元组链表的结构，邻接表。</p>
+<p>首先创建一个<strong>顶点数组</strong>，而顶点数组的每一个元素都指向一条链，这条链上的每一个结点对应的都是于其具有邻接关系的边。</p>
+<img src="/2020/11/13/data-structure-study-note-12/g3.png" class>
+<p>这样一来，两种基本结构我们都已经明白了，接下来就可以用代码进行实现了。</p>
+<h2 id="代码实现"><a class="markdownIt-Anchor" href="#代码实现"></a> 代码实现</h2>
+<h3 id="邻接矩阵"><a class="markdownIt-Anchor" href="#邻接矩阵"></a> 邻接矩阵</h3>
+<p>首先定义一些基本数据，现在或许暂时用不到，但后续的很多算法都会用到：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> vertex_num = <span class="number">0</span>;           <span class="comment">//顶点个数</span></span><br><span class="line"><span class="keyword">int</span> edge_num = <span class="number">0</span>;             <span class="comment">//边数</span></span><br><span class="line"><span class="built_in">vector</span>&lt;Type&gt; vertexs;         <span class="comment">//顶点信息</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; adjacent; <span class="comment">//邻接关系</span></span><br></pre></td></tr></table></figure>
+<p>这里的邻接矩阵可以用二维数组表示，我为了美观还是选择了二维的vector。</p>
+<p>创建矩阵的方法很简单，传入一个顶点数组，一个邻接关系组，并将矩阵的对应坐标赋值即可。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">AdjacencyMatrix</span>&lt;T&gt;:</span>:AdjacencyMatrix(<span class="built_in">vector</span>&lt;T&gt; ver, <span class="built_in">vector</span>&lt;tuple&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; adj)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//数据初始化</span></span><br><span class="line">    vertex_num = (<span class="keyword">int</span>)ver.size();</span><br><span class="line">    edge_num = (<span class="keyword">int</span>)adj.size();</span><br><span class="line">    vertexs = ver;</span><br><span class="line">    visited.resize(vertex_num, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">//初始化邻接关系</span></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">temp</span><span class="params">(vertex_num, INT_MAX)</span></span>;</span><br><span class="line">    adjacent.resize(vertex_num, temp);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i : adj)</span><br><span class="line">    &#123;</span><br><span class="line">        adjacent[get&lt;<span class="number">0</span>&gt;(i)][get&lt;<span class="number">1</span>&gt;(i)] = get&lt;<span class="number">2</span>&gt;(i);</span><br><span class="line">        adjacent[get&lt;<span class="number">1</span>&gt;(i)][get&lt;<span class="number">0</span>&gt;(i)] = get&lt;<span class="number">2</span>&gt;(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里默认是将图视为无向图，所以对应每条边都建立双向关系，如果是有向图只需删去</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adjacent[get&lt;<span class="number">1</span>&gt;(i)][get&lt;<span class="number">0</span>&gt;(i)] = get&lt;<span class="number">2</span>&gt;(i);</span><br></pre></td></tr></table></figure>
+<p>这句即可。</p>
+<h3 id="邻接表"><a class="markdownIt-Anchor" href="#邻接表"></a> 邻接表</h3>
+<p>相比起邻接矩阵，邻接表可能相对复杂。首先我们要构造出顶点数组，而顶点数组的每个元素除了顶点信息以外还需要一个指向第一条边的指针。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">VertexNode</span> //顶点结点</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Type vertex;</span><br><span class="line">    EdgeNode *firstEdge; <span class="comment">//与其连接的第一条边</span></span><br><span class="line">&#125; VertexNode;</span><br><span class="line"><span class="built_in">vector</span>&lt;VertexNode *&gt; vertexs; <span class="comment">//顶点数组</span></span><br></pre></td></tr></table></figure>
+<p>而对于边结点，起点、终点以及权值其实不需要全部记录，只需要记录终点与权值就够了，因为起点已经被指向它的顶点所确定了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">EdgeNode</span> //边结点</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> adjVex; <span class="comment">//与其连接的顶点</span></span><br><span class="line">    <span class="keyword">int</span> weight; <span class="comment">//权值</span></span><br><span class="line">    EdgeNode *next;</span><br><span class="line">&#125; EdgeNode;</span><br></pre></td></tr></table></figure>
+<p>创建邻接关系的部分也与邻接矩阵大体相同，只不过写入邻接关系的部分需要稍作改动：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">AdjacencyList</span>&lt;T&gt;:</span>:AdjacencyList(<span class="built_in">vector</span>&lt;T&gt; ver, <span class="built_in">vector</span>&lt;tuple&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; adj)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//数据初始化</span></span><br><span class="line">    vertex_num = (<span class="keyword">int</span>)ver.size();</span><br><span class="line">    edge_num = (<span class="keyword">int</span>)adj.size();</span><br><span class="line">    visited.resize(vertex_num, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">//顶点数组赋值</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; vertex_num; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        VertexNode *tempVer = (VertexNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(VertexNode));</span><br><span class="line">        tempVer-&gt;vertex = ver[i];</span><br><span class="line">        tempVer-&gt;firstEdge = <span class="literal">NULL</span>;</span><br><span class="line">        vertexs.push_back(tempVer);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//邻接关系赋值</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i : adj)</span><br><span class="line">    &#123;</span><br><span class="line">        addAdj(get&lt;<span class="number">0</span>&gt;(i), get&lt;<span class="number">1</span>&gt;(i), get&lt;<span class="number">2</span>&gt;(i));</span><br><span class="line">        addAdj(get&lt;<span class="number">1</span>&gt;(i), get&lt;<span class="number">0</span>&gt;(i), get&lt;<span class="number">2</span>&gt;(i));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>addAdj()函数即是用前插法将数据结点插入顶点结点所确定的链中：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">AdjacencyList</span>&lt;T&gt;:</span>:addAdj(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> w)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//创建一个临时结点</span></span><br><span class="line">    EdgeNode *tempEdge = (EdgeNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(EdgeNode));</span><br><span class="line">    tempEdge-&gt;adjVex = y;</span><br><span class="line">    tempEdge-&gt;weight = z;</span><br><span class="line">    tempEdge-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//用前插法插入结点</span></span><br><span class="line">    <span class="keyword">if</span> (vertexs[x]-&gt;firstEdge == <span class="literal">NULL</span>)</span><br><span class="line">        vertexs[x]-&gt;firstEdge = tempEdge;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        tempEdge-&gt;next = vertexs[x]-&gt;firstEdge;</span><br><span class="line">        vertexs[x]-&gt;firstEdge = tempEdge;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样一来，构造邻接关系的部分就完成了。</p>
+<h2 id="结"><a class="markdownIt-Anchor" href="#结"></a> 结</h2>
+<p>作为图部分的第一篇笔记，其实并没有讲什么特别难的内容，更多地是对于图的抛砖引玉，先对图有个大体的了解，以便开始后面的学习。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Linyx</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://linyxxxxx.github.io/2020/11/13/data-structure-study-note-12/">https://linyxxxxx.github.io/2020/11/13/data-structure-study-note-12/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://linyxxxxx.github.io" target="_blank">二零拾肆</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/01/01/94UYcKo67ZX2vuS.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/11/18/data-structure-study-note-13/"><img class="prev-cover" src="https://i.loli.net/2021/01/01/94UYcKo67ZX2vuS.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">数据结构算法笔记#3.2:图的遍历(DFS与BFS)</div></div></a></div><div class="next-post pull-right"><a href="/2020/11/04/data-structure-study-note-11/"><img class="next-cover" src="https://i.loli.net/2021/01/01/mxCKtDnIWY6jrTq.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">数据结构算法笔记#2.5:树的应用—并查集</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/04/04/CG-1/" title="使用OpenGL读取ply文件并构建模型"><img class="cover" src="https://i.loli.net/2021/04/04/ctrlBhgF2uq7Xda.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-04</div><div class="title">使用OpenGL读取ply文件并构建模型</div></div></a></div><div><a href="/2021/05/09/cg-note-01/" title="图形学学习笔记#1:变换"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-09</div><div class="title">图形学学习笔记#1:变换</div></div></a></div><div><a href="/2021/05/16/cg-note-02/" title="图形学学习笔记#2:明暗着色"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-16</div><div class="title">图形学学习笔记#2:明暗着色</div></div></a></div><div><a href="/2021/05/23/cg-note-03/" title="图形学学习笔记#3:光线追踪"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-23</div><div class="title">图形学学习笔记#3:光线追踪</div></div></a></div><div><a href="/2021/06/18/cg-note-04/" title="图形学学习笔记#4:杂"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-18</div><div class="title">图形学学习笔记#4:杂</div></div></a></div><div><a href="/2021/10/31/computer-networking-note-1/" title="计网笔记#1：概论"><img class="cover" src="https://i.loli.net/2021/10/31/KeLOvCzsu6pRwUn.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-31</div><div class="title">计网笔记#1：概论</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Linyx</div><div class="author-info__description">哀吾生之须臾</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Linyxxxxx/"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Linyxxxxx/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://weibo.com/5239240464/" target="_blank" title="Weibo"><i class="fab fa-weibo"></i></a><a class="social-icon" href="https://www.zhihu.com/people/lin-30-65/" target="_blank" title="Zhihu"><i class="iconfont icon-29"></i></a><a class="social-icon" href="https://steamcommunity.com/profiles/76561198147249500/" target="_blank" title="Steam"><i class="fab fa-steam"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">Linyx.tk上不去了,大概是用來托管的Vercel挂了,先將就一下來這裏玩玩吧:https://linyxxxxx-github-io.vercel.app/。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text"> 基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text"> 基本结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text"> 代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5"><span class="toc-number">3.1.</span> <span class="toc-text"> 邻接矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%82%BB%E6%8E%A5%E8%A1%A8"><span class="toc-number">3.2.</span> <span class="toc-text"> 邻接表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text"> 结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验"><img src="https://s2.loli.net/2022/02/10/jNZFLl8TygBi1rR.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="双人成行:老套的剧情,全新的体验"/></a><div class="content"><a class="title" href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验">双人成行:老套的剧情,全新的体验</a><time datetime="2022-02-10T02:34:05.000Z" title="发表于 2022-02-10 10:34:05">2022-02-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/20/my-2021/" title="二零贰壹"><img src="https://i.loli.net/2021/02/11/ncoG4Sj93xXJkP6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二零贰壹"/></a><div class="content"><a class="title" href="/2021/12/20/my-2021/" title="二零贰壹">二零贰壹</a><time datetime="2021-12-20T12:33:31.000Z" title="发表于 2021-12-20 20:33:31">2021-12-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置"><img src="https://i.loli.net/2020/12/31/fq97o1pgd4mOtzk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Eclipse-Java-SceneBuilder开发环境配置"/></a><div class="content"><a class="title" href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置">Eclipse-Java-SceneBuilder开发环境配置</a><time datetime="2021-12-04T11:25:23.000Z" title="发表于 2021-12-04 19:25:23">2021-12-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性"><img src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#5：数据库完整性"/></a><div class="content"><a class="title" href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性">数据库笔记#5：数据库完整性</a><time datetime="2021-11-20T07:02:03.000Z" title="发表于 2021-11-20 15:02:03">2021-11-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性"><img src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#4：数据库安全性"/></a><div class="content"><a class="title" href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性">数据库笔记#4：数据库安全性</a><time datetime="2021-11-18T01:25:28.000Z" title="发表于 2021-11-18 09:25:28">2021-11-18</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://i.loli.net/2021/01/01/94UYcKo67ZX2vuS.png)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Linyx</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script id="canvas_nest" defer="defer" color="255,182,185" opacity="0.6" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div></body></html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>计网笔记#3：数据链路层 | 二零拾肆</title><meta name="keywords" content="编程,计算机"><meta name="author" content="Linyx"><meta name="copyright" content="Linyx"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="概述 数据链路层使用的信道主要有以下两种类型：  点对点信道 广播信道   使用点对点信道的数据链路层  链路link：一条无源的点到点的物理线路段，中间没有任何其他的交换结点。一条链路只是一条通路的一个组成部分。 数据链路：链路 + 控制数据传输通信协议的硬件和软件。最常用的方法是使用适配器（网卡）。 数据链路层中传输的数据单位是 帧 。   数据链路层的三个基本问题——封装成帧、透明传输、差">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计网笔记#3：数据链路层">
+<meta property="og:url" content="https://linyxxxxx.github.io/2021/11/01/computer-networking-note-3/index.html">
+<meta property="og:site_name" content="二零拾肆">
+<meta property="og:description" content="概述 数据链路层使用的信道主要有以下两种类型：  点对点信道 广播信道   使用点对点信道的数据链路层  链路link：一条无源的点到点的物理线路段，中间没有任何其他的交换结点。一条链路只是一条通路的一个组成部分。 数据链路：链路 + 控制数据传输通信协议的硬件和软件。最常用的方法是使用适配器（网卡）。 数据链路层中传输的数据单位是 帧 。   数据链路层的三个基本问题——封装成帧、透明传输、差">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/10/31/KeLOvCzsu6pRwUn.png">
+<meta property="article:published_time" content="2021-11-01T10:33:15.000Z">
+<meta property="article:modified_time" content="2021-11-04T13:16:13.238Z">
+<meta property="article:author" content="Linyx">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="计算机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/31/KeLOvCzsu6pRwUn.png"><link rel="shortcut icon" href="/images/icons/favicon-32x32.png"><link rel="canonical" href="https://linyxxxxx.github.io/2021/11/01/computer-networking-note-3/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Linyx","link":"链接: ","source":"来源: 二零拾肆","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-11-04 21:16:13'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}const fontSizeVal = saveToLocal.get('global-font-size')
+if (fontSizeVal !== undefined) {
+  document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+}})()</script><link rel="stylesheet" href="//at.alicdn.com/t/font_2304165_mthx92dd7j.css"><meta name="generator" content="Hexo 5.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/images/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-flask"></i><span> 实验室</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="https://linyxxxxx.github.io/lab/2048/"><i class="fa-fw fas fa-gamepad"></i><span> 2048Game</span></a></li><li><a class="site-page" href="/2021/04/17/cocos-wizard/"><i class="fa-fw fas fa-gamepad"></i><span> WIZARD</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 我-</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/me/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></li><li><a class="site-page" href="/opinion"><i class="fa-fw fas fa-signature"></i><span> 随想</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2021/10/31/KeLOvCzsu6pRwUn.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">二零拾肆</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 朋友</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-flask"></i><span> 实验室</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="https://linyxxxxx.github.io/lab/2048/"><i class="fa-fw fas fa-gamepad"></i><span> 2048Game</span></a></li><li><a class="site-page" href="/2021/04/17/cocos-wizard/"><i class="fa-fw fas fa-gamepad"></i><span> WIZARD</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 我-</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/me/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></li><li><a class="site-page" href="/opinion"><i class="fa-fw fas fa-signature"></i><span> 随想</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计网笔记#3：数据链路层</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-11-01T10:33:15.000Z" title="发表于 2021-11-01 18:33:15">2021-11-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-11-04T13:16:13.238Z" title="更新于 2021-11-04 21:16:13">2021-11-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">计算机网络学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="概述"><a class="markdownIt-Anchor" href="#概述"></a> 概述</h2>
+<p>数据链路层使用的信道主要有以下两种类型：</p>
+<ul>
+<li>点对点信道</li>
+<li>广播信道</li>
+</ul>
+<h2 id="使用点对点信道的数据链路层"><a class="markdownIt-Anchor" href="#使用点对点信道的数据链路层"></a> 使用点对点信道的数据链路层</h2>
+<ul>
+<li>链路link：一条无源的点到点的物理线路段，中间没有任何其他的交换结点。一条链路只是一条通路的一个组成部分。</li>
+<li>数据链路：链路 + 控制数据传输通信协议的硬件和软件。最常用的方法是使用适配器（网卡）。</li>
+<li>数据链路层中传输的数据单位是 <strong>帧</strong> 。</li>
+</ul>
+<h3 id="数据链路层的三个基本问题封装成帧-透明传输-差错控制"><a class="markdownIt-Anchor" href="#数据链路层的三个基本问题封装成帧-透明传输-差错控制"></a> 数据链路层的三个基本问题——封装成帧、透明传输、差错控制</h3>
+<h4 id="封装成帧与透明传输"><a class="markdownIt-Anchor" href="#封装成帧与透明传输"></a> 封装成帧与透明传输</h4>
+<blockquote>
+<p>封装成帧就是在数据的前后添加首部（帧开始符）和尾部（帧结束符），添加完的这玩意就叫做一个帧。</p>
+<p>首部和尾部的一个重要作用就是进行 <strong>帧定界</strong> 。</p>
+<p>然而，如果在原数据中出现了与帧开始符或帧结束符相同的字符，在传输的时候就会识别错误，这就是透明传输问题。要解决这种问题，就可以在 <strong>数据中</strong> 的控制字符前面添加一个转义字符，而接收端在收到数据后只需删除这些转义字符就可以正确识别，如果转义字符也出现在数据里，就用转义字符对转义字符转义。这种方法被称为 <strong>字节填充法</strong> 。</p>
+</blockquote>
+<h4 id="差错检测"><a class="markdownIt-Anchor" href="#差错检测"></a> 差错检测</h4>
+<ul>
+<li>传输过程中可能产生 <strong>比特差错</strong> ，在一段时间内传输错误的比特占所传输比特总数的概率被称为 <strong>误码率BER</strong> 。</li>
+<li>循环冗余检验CRC：在数据段的末尾添加一段 <strong>冗余码</strong> ，也称为帧检验序列FCS。接收端对收到的每一帧进行CRC检验，但只能判别出有差错或者无差错，无法确定差错出现的位置，所以有差错的帧一律丢弃。</li>
+<li>CRC只能做到 <strong>无差错接受</strong> ，即接受的数据没有差错。如果要做到可靠传输，则须加上确认与重传的机制。</li>
+</ul>
+<h3 id="点对点协议ppp"><a class="markdownIt-Anchor" href="#点对点协议ppp"></a> 点对点协议PPP</h3>
+<ul>
+<li>用户到ISP的链路使用PPP协议</li>
+</ul>
+<h4 id="帧格式"><a class="markdownIt-Anchor" href="#帧格式"></a> 帧格式</h4>
+<img src="/2021/11/01/computer-networking-note-3/1.png" class>
+<ul>
+<li>标志字段 F = 0x7E</li>
+<li>地址字段 A = 0xFF ，没有实际作用（都点对点了还要地址干啥）</li>
+<li>控制字段 C = 0x03</li>
+<li>协议字段，用于区分PPP帧的数据类型</li>
+<li>PPP帧的长度为整数字节</li>
+</ul>
+<h4 id="透明传输"><a class="markdownIt-Anchor" href="#透明传输"></a> 透明传输</h4>
+<ul>
+<li>当PPP用在同步传输链路时，协议规定采用硬件来完成比特填充</li>
+<li>当PPP用在异步传输时，就使用 <strong>字符填充法</strong> 。将信息字段中的每一个0x7E转变成2字节序列（0x7D，0x5E）；若信息字段中出现一个0x7D字节，则转变成2字节序列（0x7D，0x5D）；若信息字段中出现ASCII码的控制字符（＜0x20），则在前面加入一个0x7D字节，同时改变该字符的编码。</li>
+<li>PPP协议用在SONET/SDH链路时，是同步传输，此时采用 <strong>零比特填充</strong> 。发送端，只要有连续5个1（0b1111110 == 0x7E），就立即填入一个0。接收端对帧中的比特扫描，当发现5个连续的1，就把之后的一个0删除。</li>
+</ul>
+<h4 id="不提供使用序号的确认"><a class="markdownIt-Anchor" href="#不提供使用序号的确认"></a> 不提供使用序号的确认</h4>
+<ul>
+<li>在数据链路层出现差错的概率不大时，使用比较简单的PPP协议比较合理。</li>
+<li>在因特网环境下，PPP的信息字段放入的数据是IP数据报，数据链路层的可靠传输不能保证网络层的传输也可靠。</li>
+<li>帧检测序列FCS可以保证无差错接受。</li>
+</ul>
+<h2 id="使用广播信道的数据链路层"><a class="markdownIt-Anchor" href="#使用广播信道的数据链路层"></a> 使用广播信道的数据链路层</h2>
+<h3 id="局域网的数据链路层"><a class="markdownIt-Anchor" href="#局域网的数据链路层"></a> 局域网的数据链路层</h3>
+<ul>
+<li>局域网 ：网络为一个单位所拥有，且地理范围和站点数目都有限。具有广播功能。</li>
+<li>局域网的拓扑：星形网（集线器）、总线网、环形网（令牌）</li>
+<li>数据链路层的两个子层：逻辑链路控制LLC子层（局域网对LLC子层透明，即看不见下面的局域网；一般不考虑）、媒体接入控制MAC子层（与传输媒体有关）。</li>
+</ul>
+<h3 id="适配器"><a class="markdownIt-Anchor" href="#适配器"></a> 适配器</h3>
+<ul>
+<li>通信适配器又称网络接口卡或网卡</li>
+<li>进行串行/并行转换；缓存数据；在计算机的OS安装设备驱动程序；实现以太网协议</li>
+<li>计算机通过适配器进行与局域网的通信</li>
+</ul>
+<h3 id="csmacd协议"><a class="markdownIt-Anchor" href="#csmacd协议"></a> CSMA/CD协议</h3>
+<h4 id="以太网的广播方式"><a class="markdownIt-Anchor" href="#以太网的广播方式"></a> 以太网的广播方式</h4>
+<blockquote>
+<p>将许多计算机连接到一根总线上。假设当计算机A发送了数据信号，则将其广播，总线上的所有计算机都能检测到，但只有目的计算机B的地址才与数据帧首部的目的地址一致，所以只有B会接收这段数据，而其他计算机就将其丢弃。</p>
+</blockquote>
+<ul>
+<li>不必先建立连接就可以直接发送数据，较为灵活简便；对发送的数据不编号，也不要求对方发回确认（因为局域网信道质量好，基本不产生差错）</li>
+<li>以太网提供的服务是不可靠的交付，当目的站收到有差错的数据帧，就 <strong>直接丢弃</strong> 。当高层发现丢失了一些数据帧，便将其当作新的数据帧重传。</li>
+</ul>
+<h4 id="载波监听多点接入碰撞检测-csmacd"><a class="markdownIt-Anchor" href="#载波监听多点接入碰撞检测-csmacd"></a> 载波监听多点接入/碰撞检测 CSMA/CD</h4>
+<ul>
+<li>多点接入：许多计算机以多点的方式连在总线上</li>
+<li>载波监听：每个站在发送数据前要先检测总线上是否有其他计算机在发送数据，来避免碰撞</li>
+<li>碰撞检测：计算机边发送数据边检测信道上的信号电压大小，一旦发现总线上出现了碰撞，就立即停止发送，避免继续浪费网络资源，然后等待一段 <strong>随机时间</strong> 后再次发送。👉CSMA/CD协议的以太网只能进行半双工通信，发送的不确定性使得平均通信量远小于以太网的最高数据率。</li>
+<li>传播时延对载波监听的影响：比如A向B发送信息，由于信息传播需要时间，所以B在没收到信息前认为总线空闲，有可能同时发送信息，便会产生碰撞。</li>
+<li>将单程端到端的传播时延记为τ，则记 <strong>争用期 = 2τ</strong> （或碰撞窗口），即：最先发送数据帧的站，在发送数据帧后至多经过这段时间，就可以知道发送的数据是否遭受了碰撞。👉以太网取 <strong>51.2μS</strong> 作为争用期的长度，对于10Mb/s以太网，争用期内可以发送64字节，只要前64字节没有发生冲突，后续的数据就不会冲突。👉凡长度小于64字节的帧都是由于冲突而异常中止的无效帧。</li>
+<li>当发送数据的站一旦发生了碰撞时：立即停止发送数据；再继续发送若干比特的 <strong>人为干扰信号</strong> ，以便让所有用户都知道发生了碰撞。</li>
+</ul>
+<h2 id="使用广播信道的以太网"><a class="markdownIt-Anchor" href="#使用广播信道的以太网"></a> 使用广播信道的以太网</h2>
+<ul>
+<li>采用星形拓扑，在星形的中心为集线器（hub）</li>
+</ul>
+<h3 id="以太网的信道利用率"><a class="markdownIt-Anchor" href="#以太网的信道利用率"></a> 以太网的信道利用率</h3>
+<ul>
+<li>记帧长为L(bit)，数据发送速率为C(b/s)，则帧的发送时间为 <strong>T0=L/C</strong></li>
+<li>发送一帧的平均时间则为 2τ * n + T0 ：发生碰撞的过程可能需要多个争用期，直到转为空闲，然后才能发送信息</li>
+<li>记 <strong>a=τ/T0</strong> ，则要提高信道利用率，就必须减小a。当a→0，则说明一发生碰撞就可以立即检测出来，停止发送；若a越大，则说明争用期所占比例越大，在碰撞中浪费许多信道资源。👉以太网连线的长度不能太长，否则 τ 会太大；以太网的帧长也不能太短，否则 T0 会太小。</li>
+<li>在 <strong>理想情况</strong> 下，各站发送的数据不会碰撞 ，则发送一帧占用线路的时间为 T0+τ ，但帧本身的发送时间为 T0 ，所以极限信道利用率为 <strong>Smax = T0 / ( T0 + τ ) = 1 / ( 1+a )</strong></li>
+<li><strong>帧间最小间隔</strong> 为9.6μS，用于使刚刚收到数据帧的站的接收缓存来得及清理，做好接收下一帧的准备</li>
+</ul>
+<h3 id="以太网的mac层"><a class="markdownIt-Anchor" href="#以太网的mac层"></a> 以太网的MAC层</h3>
+<ul>
+<li>硬件地址又称为物理地址或MAC地址，即适配器地址或适配器标识符EUI-48（高位24位由IEEE的注册管理机构RA分配，低位24位 <strong>扩展标识符</strong> 由厂家自行指派）</li>
+<li>适配器每从网络上收到一个MAC帧就先用硬件检查MAC帧中的MAC地址，判断是否发往本站</li>
+</ul>
+<h4 id="mac帧的基本结构"><a class="markdownIt-Anchor" href="#mac帧的基本结构"></a> MAC帧的基本结构</h4>
+<img src="/2021/11/01/computer-networking-note-3/2.png" class>
+<ul>
+<li>类型字段用来标志 <strong>上一层</strong> 用的是什么协议，以便把MAC帧的数据交给上一层的这个协议</li>
+<li>数据字段的大小为 <strong>46~1500</strong> 字节，这个46字节为最小数据长度64 - 目的地址(6) - 源地址(6) - 类型(2) - FCS(4) 👉当数据字段小于46字节时，应加入填充字段，以保证不小于64字节</li>
+<li>在MAC帧前面插入的8个字节：第一个字段的7个字节为前同步码，用来迅速实现MAC帧的 <strong>比特同步</strong> ，第二个字段的1个字节为帧开始定界符，表示后面的信息是MAC帧</li>
+</ul>
+<h2 id="扩展的局域网"><a class="markdownIt-Anchor" href="#扩展的局域网"></a> 扩展的局域网</h2>
+<h3 id="在物理层扩展局域网"><a class="markdownIt-Anchor" href="#在物理层扩展局域网"></a> 在物理层扩展局域网</h3>
+<ul>
+<li>主机使用光纤和一对光纤调制解调器连接到集线器</li>
+<li>用多个集线器组成更大的局域网，该局域网都在一个碰撞域中，但总的吞吐量并未提高</li>
+</ul>
+<h3 id="在数据链路层扩展局域网"><a class="markdownIt-Anchor" href="#在数据链路层扩展局域网"></a> 在数据链路层扩展局域网</h3>
+<ul>
+<li>使用 <strong>网桥</strong> ，网桥工作在数据链路层，根据MAC帧的目的地址对收到的帧进行转发</li>
+<li>网桥的过滤帧功能：当网桥收到一个帧，并不是直接向所有接口转发此帧，而是先检查目的MAC地址，再转发到对应接口（通过内部的转发表确定）</li>
+<li>优点：可以互连不同物理层、不同MAC子层和不同速率的局域网（如果用hub，速率快的往速率慢的发送会堵塞）；使各网段称为隔离开的碰撞率</li>
+<li>缺点：增加了时延，传播过多广播信息会产生 <strong>广播风暴</strong> （信息会重复转发）</li>
+<li>集线器在转发帧时不会对传输媒体进行检测；网桥在转发帧之前必须执行CSMA/CD算法，检测碰撞</li>
+<li>目前使用得比较多得网桥是 <strong>透明网桥</strong> ：局域网上的各站点并不知道所发送的帧将经过哪几个网桥</li>
+</ul>
+<h4 id="网桥的自学习算法"><a class="markdownIt-Anchor" href="#网桥的自学习算法"></a> 网桥的自学习算法</h4>
+<blockquote>
+<p>当网桥收到一个数据帧，就记录下它的源地址D和进入网桥的接口，然后把这两个信息加入转发表，以后收到目的地址D的信息，就知道要往这个接口发送了。</p>
+<p>同时，也要记录下帧进入该网桥的 <strong>时间</strong> ，毕竟以太网的拓扑可能经常发生变化，记录了时间就可以只保留最新状态信息。</p>
+<p>自学习完成后，对帧进行转发，首先查看转发表中是否有该目的地址：</p>
+<ul>
+<li>如果有，就先判断这个目的地址的对应接口是否和帧进入网桥的接口相同：
+<ul>
+<li>是：那就说明不需要经过网桥转发，直接丢弃</li>
+<li>否：按对应接口进行转发</li>
+</ul>
+</li>
+<li>如果没有，就通过除进入网桥的接口以外的所有其他接口进行转发。</li>
+</ul>
+</blockquote>
+<h4 id="透明网桥的生成树算法"><a class="markdownIt-Anchor" href="#透明网桥的生成树算法"></a> 透明网桥的生成树算法</h4>
+<blockquote>
+<p>因为网络是四通八达的，转发的帧很大可能会在网络中不停地兜圈子，所以需要使用生成树找到任意两个站中的唯一路径。</p>
+<p>同时，由于网络拓扑是经常发生变化的，生成树上的根网桥每隔一段时间还需要对生成树的拓扑进行更新。</p>
+</blockquote>
+<h4 id="源路由网桥"><a class="markdownIt-Anchor" href="#源路由网桥"></a> 源路由网桥</h4>
+<blockquote>
+<p>源路由网桥在发送帧时将详细的路由信息放在帧的首部，源站以广播方式向目的站发送一个 <strong>发现帧</strong> ，每个发现帧都记录所经过的路由。</p>
+<p>发现帧到达目的站时就沿各自的路由返回源站，源站在得知这些路由后，从所有可能的路由中选择一个最佳路由，以后从这个源站向这个目的站发送的帧的首部，都必须携带这一个最佳路由信息。</p>
+<p>源路由网桥可能提高网络资源的利用率</p>
+</blockquote>
+<h4 id="多接口网桥以太网交换机"><a class="markdownIt-Anchor" href="#多接口网桥以太网交换机"></a> 多接口网桥——以太网交换机</h4>
+<ul>
+<li>以太网交换机的每个接口都直接和主机相连，而且一般工作在 <strong>全双工方式</strong></li>
+<li>对于普通的10Mb/s的共享式以太网，若有N个用户，每个用户占有的平均带宽只有10/N。但如果使用以太网交换机，虽然每个接口到主机的带宽还是10Mb/s，但每个用户在通信时是独占带宽，所以总容量为10NMb/s。</li>
+</ul>
+<h5 id="虚拟局域网vlan"><a class="markdownIt-Anchor" href="#虚拟局域网vlan"></a> 虚拟局域网VLAN</h5>
+<p>由一些局域网网段构成的与物理位置无关的逻辑组。每个VLAN的帧都有一个明确的标识符，指明发送这个帧的工作站是属于哪一个VLAN。</p>
+<img src="/2021/11/01/computer-networking-note-3/3.png" class>
+<blockquote>
+<p>当B1向VLAN2的成员发送数据，B2和B3会收到消息，但A1，A2，C1都不会收到。</p>
+</blockquote>
+<p>虚拟局域网限制了接收广播信息的工作站数，使网络不会因为广播风暴而引起性能恶化。</p>
+<p>虚拟局域网协议允许在以太网的帧格式中插入一个4字节的VLAN标记，来指明发送该帧的工作站属于哪个虚拟局域网（位于源地址与类型之间）。</p>
+<h2 id="高速以太网"><a class="markdownIt-Anchor" href="#高速以太网"></a> 高速以太网</h2>
+<ul>
+<li>速率达到或超过100Mb/s的以太网被称为高速以太网。在双绞线上传送100Mb/s基带信号的星形拓扑以太网，仍使用IEEE802.3的CSMA/CD协议。100BASE-T以太网又称为快速以太网。</li>
+<li>吉比特以太网允许在1Gb/s下全双工和半双工两种方式工作，在半双工方式下使用CSMA/CD协议。</li>
+<li>10吉比特以太网与10Mb/s、100Mb/s和1Gb/s以太网的帧格式完全相同。10吉比特以太网 <strong>只工作在全双工方式</strong> ，因此没有争用问题，也不使用CSMA/CD协议。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Linyx</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://linyxxxxx.github.io/2021/11/01/computer-networking-note-3/">https://linyxxxxx.github.io/2021/11/01/computer-networking-note-3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://linyxxxxx.github.io" target="_blank">二零拾肆</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/10/31/KeLOvCzsu6pRwUn.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/11/07/dbs-note-1/"><img class="prev-cover" src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">数据库笔记#1：绪论</div></div></a></div><div class="next-post pull-right"><a href="/2021/10/31/computer-networking-note-2/"><img class="next-cover" src="https://i.loli.net/2021/10/31/KeLOvCzsu6pRwUn.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">计网笔记#2：物理层</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/04/04/CG-1/" title="使用OpenGL读取ply文件并构建模型"><img class="cover" src="https://i.loli.net/2021/04/04/ctrlBhgF2uq7Xda.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-04</div><div class="title">使用OpenGL读取ply文件并构建模型</div></div></a></div><div><a href="/2021/05/09/cg-note-01/" title="图形学学习笔记#1:变换"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-09</div><div class="title">图形学学习笔记#1:变换</div></div></a></div><div><a href="/2021/05/16/cg-note-02/" title="图形学学习笔记#2:明暗着色"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-16</div><div class="title">图形学学习笔记#2:明暗着色</div></div></a></div><div><a href="/2021/05/23/cg-note-03/" title="图形学学习笔记#3:光线追踪"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-23</div><div class="title">图形学学习笔记#3:光线追踪</div></div></a></div><div><a href="/2021/06/18/cg-note-04/" title="图形学学习笔记#4:杂"><img class="cover" src="https://i.loli.net/2021/05/09/uTmkEcSePsBG3aH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-18</div><div class="title">图形学学习笔记#4:杂</div></div></a></div><div><a href="/2021/10/31/computer-networking-note-1/" title="计网笔记#1：概论"><img class="cover" src="https://i.loli.net/2021/10/31/KeLOvCzsu6pRwUn.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-31</div><div class="title">计网笔记#1：概论</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Linyx</div><div class="author-info__description">哀吾生之须臾</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Linyxxxxx/"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Linyxxxxx/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://weibo.com/5239240464/" target="_blank" title="Weibo"><i class="fab fa-weibo"></i></a><a class="social-icon" href="https://www.zhihu.com/people/lin-30-65/" target="_blank" title="Zhihu"><i class="iconfont icon-29"></i></a><a class="social-icon" href="https://steamcommunity.com/profiles/76561198147249500/" target="_blank" title="Steam"><i class="fab fa-steam"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">Linyx.tk上不去了,大概是用來托管的Vercel挂了,先將就一下來這裏玩玩吧:https://linyxxxxx-github-io.vercel.app/。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text"> 概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E7%82%B9%E5%AF%B9%E7%82%B9%E4%BF%A1%E9%81%93%E7%9A%84%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">2.</span> <span class="toc-text"> 使用点对点信道的数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98%E5%B0%81%E8%A3%85%E6%88%90%E5%B8%A7-%E9%80%8F%E6%98%8E%E4%BC%A0%E8%BE%93-%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6"><span class="toc-number">2.1.</span> <span class="toc-text"> 数据链路层的三个基本问题——封装成帧、透明传输、差错控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%81%E8%A3%85%E6%88%90%E5%B8%A7%E4%B8%8E%E9%80%8F%E6%98%8E%E4%BC%A0%E8%BE%93"><span class="toc-number">2.1.1.</span> <span class="toc-text"> 封装成帧与透明传输</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%AE%E9%94%99%E6%A3%80%E6%B5%8B"><span class="toc-number">2.1.2.</span> <span class="toc-text"> 差错检测</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%82%B9%E5%AF%B9%E7%82%B9%E5%8D%8F%E8%AE%AEppp"><span class="toc-number">2.2.</span> <span class="toc-text"> 点对点协议PPP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A7%E6%A0%BC%E5%BC%8F"><span class="toc-number">2.2.1.</span> <span class="toc-text"> 帧格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E4%BC%A0%E8%BE%93"><span class="toc-number">2.2.2.</span> <span class="toc-text"> 透明传输</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8D%E6%8F%90%E4%BE%9B%E4%BD%BF%E7%94%A8%E5%BA%8F%E5%8F%B7%E7%9A%84%E7%A1%AE%E8%AE%A4"><span class="toc-number">2.2.3.</span> <span class="toc-text"> 不提供使用序号的确认</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%B9%BF%E6%92%AD%E4%BF%A1%E9%81%93%E7%9A%84%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">3.</span> <span class="toc-text"> 使用广播信道的数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E5%9F%9F%E7%BD%91%E7%9A%84%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">3.1.</span> <span class="toc-text"> 局域网的数据链路层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E9%85%8D%E5%99%A8"><span class="toc-number">3.2.</span> <span class="toc-text"> 适配器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#csmacd%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.3.</span> <span class="toc-text"> CSMA&#x2F;CD协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E5%B9%BF%E6%92%AD%E6%96%B9%E5%BC%8F"><span class="toc-number">3.3.1.</span> <span class="toc-text"> 以太网的广播方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%BD%E6%B3%A2%E7%9B%91%E5%90%AC%E5%A4%9A%E7%82%B9%E6%8E%A5%E5%85%A5%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B-csmacd"><span class="toc-number">3.3.2.</span> <span class="toc-text"> 载波监听多点接入&#x2F;碰撞检测 CSMA&#x2F;CD</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%B9%BF%E6%92%AD%E4%BF%A1%E9%81%93%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">4.</span> <span class="toc-text"> 使用广播信道的以太网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E4%BF%A1%E9%81%93%E5%88%A9%E7%94%A8%E7%8E%87"><span class="toc-number">4.1.</span> <span class="toc-text"> 以太网的信道利用率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84mac%E5%B1%82"><span class="toc-number">4.2.</span> <span class="toc-text"> 以太网的MAC层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#mac%E5%B8%A7%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="toc-number">4.2.1.</span> <span class="toc-text"> MAC帧的基本结构</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E7%9A%84%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">5.</span> <span class="toc-text"> 扩展的局域网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E7%89%A9%E7%90%86%E5%B1%82%E6%89%A9%E5%B1%95%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">5.1.</span> <span class="toc-text"> 在物理层扩展局域网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E6%89%A9%E5%B1%95%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">5.2.</span> <span class="toc-text"> 在数据链路层扩展局域网</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E6%A1%A5%E7%9A%84%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"><span class="toc-number">5.2.1.</span> <span class="toc-text"> 网桥的自学习算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E7%BD%91%E6%A1%A5%E7%9A%84%E7%94%9F%E6%88%90%E6%A0%91%E7%AE%97%E6%B3%95"><span class="toc-number">5.2.2.</span> <span class="toc-text"> 透明网桥的生成树算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BA%90%E8%B7%AF%E7%94%B1%E7%BD%91%E6%A1%A5"><span class="toc-number">5.2.3.</span> <span class="toc-text"> 源路由网桥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E6%8E%A5%E5%8F%A3%E7%BD%91%E6%A1%A5%E4%BB%A5%E5%A4%AA%E7%BD%91%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="toc-number">5.2.4.</span> <span class="toc-text"> 多接口网桥——以太网交换机</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%B1%80%E5%9F%9F%E7%BD%91vlan"><span class="toc-number">5.2.4.1.</span> <span class="toc-text"> 虚拟局域网VLAN</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E9%80%9F%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">6.</span> <span class="toc-text"> 高速以太网</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验"><img src="https://s2.loli.net/2022/02/10/jNZFLl8TygBi1rR.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="双人成行:老套的剧情,全新的体验"/></a><div class="content"><a class="title" href="/2022/02/10/it-takes-two/" title="双人成行:老套的剧情,全新的体验">双人成行:老套的剧情,全新的体验</a><time datetime="2022-02-10T02:34:05.000Z" title="发表于 2022-02-10 10:34:05">2022-02-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/20/my-2021/" title="二零贰壹"><img src="https://i.loli.net/2021/02/11/ncoG4Sj93xXJkP6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二零贰壹"/></a><div class="content"><a class="title" href="/2021/12/20/my-2021/" title="二零贰壹">二零贰壹</a><time datetime="2021-12-20T12:33:31.000Z" title="发表于 2021-12-20 20:33:31">2021-12-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置"><img src="https://i.loli.net/2020/12/31/fq97o1pgd4mOtzk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Eclipse-Java-SceneBuilder开发环境配置"/></a><div class="content"><a class="title" href="/2021/12/04/eclipse-javafx/" title="Eclipse-Java-SceneBuilder开发环境配置">Eclipse-Java-SceneBuilder开发环境配置</a><time datetime="2021-12-04T11:25:23.000Z" title="发表于 2021-12-04 19:25:23">2021-12-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性"><img src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#5：数据库完整性"/></a><div class="content"><a class="title" href="/2021/11/20/dbs-note-5/" title="数据库笔记#5：数据库完整性">数据库笔记#5：数据库完整性</a><time datetime="2021-11-20T07:02:03.000Z" title="发表于 2021-11-20 15:02:03">2021-11-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性"><img src="https://i.loli.net/2021/11/07/C4d5QUyBWDZk7gN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库笔记#4：数据库安全性"/></a><div class="content"><a class="title" href="/2021/11/18/dbs-note-4/" title="数据库笔记#4：数据库安全性">数据库笔记#4：数据库安全性</a><time datetime="2021-11-18T01:25:28.000Z" title="发表于 2021-11-18 09:25:28">2021-11-18</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://i.loli.net/2021/10/31/KeLOvCzsu6pRwUn.png)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Linyx</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script id="canvas_nest" defer="defer" color="255,182,185" opacity="0.6" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div></body></html>
